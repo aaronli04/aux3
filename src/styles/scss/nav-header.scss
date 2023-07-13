@@ -1,0 +1,17 @@
+.nav-header__liner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-header__links-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+}
+
+.nav-header__link {
+    color: blue;
+    text-decoration: none;
+}

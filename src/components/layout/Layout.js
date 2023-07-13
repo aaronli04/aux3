@@ -1,7 +1,9 @@
+import NavHeader from "./NavHeader"
+
 export default function Layout({ children }) {
     return (
         <div>
-            {/* <span>header</span> */}
+            <NavHeader />
             <main>{children}</main>
             {/* <span>footer</span> */}
         </div>

@@ -1,5 +1,10 @@
 .home {
+    width: 100%;
+    height: 100%;
+}
+
+.home__title-section {
     display: flex;
+    flex-direction: row;
     justify-content: center;
-    color: $primary-color;
 }
