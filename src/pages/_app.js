@@ -1,5 +1,10 @@
-import styles from '../styles/css/index.css'
+import '../styles/css/index.css'
+import Layout from '@/components/layout/Layout'
 
 export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} style={styles} />
+  return (
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
+  )
 }
