@@ -1,10 +1,10 @@
 import useSignInGoogle from "@/hooks/useSignInGoogle"
 
-export default function ContinueWithGoogle({ icon, title }) {
+export default function ContinueWithGoogle() {
     const { login } = useSignInGoogle()
     return (
         <button onClick={login}>
-            {title}
+            Continue with Google
         </button>
     )
 }

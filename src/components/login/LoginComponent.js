@@ -12,7 +12,7 @@ export default function LoginComponent() {
                     login
                 </div>
                 <div className={pcn('__button-section')}>
-                    <ContinueWithGoogle title='Continue with Google'/>
+                    <ContinueWithGoogle />
                 </div>
             </div>
         </div>
