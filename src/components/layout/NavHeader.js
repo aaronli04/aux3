@@ -7,7 +7,6 @@ const pcn = getPCN(className);
 const links = [
     { name: 'home', path: '/' },
     { name: 'create a room', path: '/create' },
-    { name: 'login', path: '/login' },
     { name: 'profile', path: '/profile' }
 ]
 
