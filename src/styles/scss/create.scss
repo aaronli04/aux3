@@ -1,16 +1,16 @@
-.profile__liner {
+.create__liner {
     display: flex;
     flex-direction: column;
 }
 
-.profile__header {
+.create__title-section {
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 
-.profile__data-section {
+.create__button-section {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
