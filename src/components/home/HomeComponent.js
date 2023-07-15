@@ -1,13 +1,18 @@
-import React, { useContext } from "react"
+import React, { useState, useEffect } from "react"
 import { getPCN } from "@/utils/classes"
-import { UserContext } from "@/contexts/UserContext"
 
 const className = 'home'
 const pcn = getPCN(className)
 
 export default function HomeComponent() {
-    const { user } = useContext(UserContext)
-    console.log(user)
+    const [user, setUser] = useState()
+    useEffect(() => {
+        var auth = JSON.parse(localStorage.getItem('spotify-auth'));
+        if (auth) {
+            setUser(auth.code)
+        }
+    }, [])
+
     return (
         <div className={className}>
             <div className={pcn('__title-section')}>

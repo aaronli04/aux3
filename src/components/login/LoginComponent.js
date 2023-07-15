@@ -1,13 +1,11 @@
-import React, { useContext, useEffect } from "react"
+import React from "react"
 import { getPCN } from "@/utils/classes"
 import useSpotifyAccess from "../hooks/useSpotifyAccess"
-import { UserContext } from "@/contexts/UserContext"
 
 const className = 'login'
 const pcn = getPCN(className)
 
 export default function CreateComponent() {
-    const { user, setUser } = useContext(UserContext)
     const { generateAuthorizationCode } = useSpotifyAccess();
 
     function handleClick() {

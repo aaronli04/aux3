@@ -1,20 +1,15 @@
-import React, { useEffect, useContext } from "react"
+import React, { useEffect } from "react"
 import { getPCN } from "@/utils/classes"
 import useSpotifyAccess from "../hooks/useSpotifyAccess"
-import { UserContext } from "@/contexts/UserContext"
 
 const className = 'create'
 const pcn = getPCN(className)
 
 export default function CreateComponent() {
-    const { user, setUser } = useContext(UserContext)
     const { processValidLink, checkLinkForError, requestAccessToken } = useSpotifyAccess();
 
     function handleClick() {
         requestAccessToken()
-    }
-
-    if (typeof window !== "undefined") {
     }
 
     useEffect(() => {
@@ -25,14 +20,11 @@ export default function CreateComponent() {
             if (!error) {
                 const info = processValidLink(link)
                 if (info) {
-                    setUser(info.code)
                     localStorage.setItem('spotify-auth', JSON.stringify(info))
-                } else if (!user) {
+                } else {
                     window.location.href = 'http://localhost:3000/login'
                 }
             }
-        } else {
-            setUser(auth.code)
         }
     }, [])
 
