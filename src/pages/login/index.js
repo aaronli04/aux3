@@ -1,15 +1,15 @@
 import Head from 'next/head';
-import CreateComponent from "@/components/create/CreateComponent";
+import LoginComponent from "@/components/login/LoginComponent";
 
 export default function HomePage() {
   return (
     <>
       <Head>
         <title>
-          aux3 | create
+          aux3 | login
         </title>
       </Head>
-      <CreateComponent />
+      <LoginComponent />
     </>
   )
 }
