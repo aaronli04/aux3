@@ -8,23 +8,40 @@ const pcn = getPCN(className)
 
 export default function CreateComponent() {
     const { user, setUser } = useContext(UserContext)
-    const { requestAccessToken } = useSpotifyAccess();
+    const { processValidLink, checkLinkForError, requestAccessToken } = useSpotifyAccess();
 
     function handleClick() {
         requestAccessToken()
     }
 
-    if (typeof window !== "undefined" && !user) {
-        window.location.href = 'http://localhost:3000/login'
+    if (typeof window !== "undefined") {
     }
 
-    if (user) {
-        return (
-            <div className={className}>
-                <div className={pcn('__title-section')}>
-                    create a room
-                </div>
+    useEffect(() => {
+        var auth = JSON.parse(localStorage.getItem('spotify-auth'));
+        if (!auth) {
+            const link = window.location.href
+            const error = checkLinkForError(link)
+            if (!error) {
+                const info = processValidLink(link)
+                if (info) {
+                    setUser(info.code)
+                    localStorage.setItem('spotify-auth', JSON.stringify(info))
+                } else if (!user) {
+                    window.location.href = 'http://localhost:3000/login'
+                }
+            }
+        } else {
+            setUser(auth.code)
+        }
+    }, [])
+
+
+    return (
+        <div className={className}>
+            <div className={pcn('__title-section')}>
+                create a room
             </div>
-        )
-    }
+        </div>
+    )
 }
