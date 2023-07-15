@@ -1,4 +1,3 @@
-import React from "react";
 import { generateId } from '@/utils/random';
 
 function useSpotifyAccess() {
@@ -53,11 +52,28 @@ function useSpotifyAccess() {
     }
   }
 
-  async function requestAccessToken() {
-    const state = await generateAuthorizationCode();
-    if (!state) {
+  async function requestAccessToken(auth) {
+    const authCode = auth.code;
+    const authState = auth.state;
+    if (!authState) { return }
+    console.log(auth)
+    try {
+      const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Basic ' + btoa(process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID + ':' + process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET),
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `grant_type=authorization_code&code=${authCode}&redirect_uri=${process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}`
+      })
+      console.log(response.json())
+    } catch (err) {
+      console.log(err)
     }
   }
+
+
+
 
   return {
     checkLinkForError: checkLinkForError,

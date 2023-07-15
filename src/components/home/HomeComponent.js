@@ -9,7 +9,7 @@ export default function HomeComponent() {
     useEffect(() => {
         var auth = JSON.parse(localStorage.getItem('spotify-auth'));
         if (auth) {
-            setUser(auth.code)
+            setUser(auth.state)
         }
     }, [])
 
