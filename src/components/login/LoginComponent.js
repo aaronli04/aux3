@@ -1,12 +1,12 @@
 import React from "react"
 import { getPCN } from "@/utils/classes"
-import useSpotifyAccess from "../hooks/useSpotifyAccess"
+import useSpotifyLogin from "@/hooks/useSpotifyLogin"
 
 const className = 'login'
 const pcn = getPCN(className)
 
 export default function CreateComponent() {
-    const { generateAuthorizationCode } = useSpotifyAccess();
+    const { generateAuthorizationCode } = useSpotifyLogin();
 
     function handleClick() {
         generateAuthorizationCode();

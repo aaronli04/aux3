@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import { getPCN } from "@/utils/classes"
-import useSpotifyAccess from "../hooks/useSpotifyAccess"
+import useSpotifyLogin from "@/hooks/useSpotifyLogin"
 
 const className = 'create'
 const pcn = getPCN(className)
 
 export default function CreateComponent() {
-    const { processValidLink, checkLinkForError, requestAccessToken } = useSpotifyAccess();
-    const [auth, setAuth] = useState();
-
+    const {refreshAccessToken} = useSpotifyLogin()
     function handleClick() {
-        requestAccessToken(auth)
+        refreshAccessToken();
+        console.log('creating a room')
     }
 
+    /**
+     * curl "https://api.spotify.com/v1/artists/4Z8W4fKeB5YxbusRsdQVPb" \
+     -H "Authorization: Bearer  BQBNcxNpiMvvHTwodu6FAUGlWmye1xVdbJW1F6EMIDrdSPc4yUmEQKLd0vp0ABoVkMdnUfzHOHhSGmQQNOLJX07CfeIqyhmHfhrRX3mSJ-hIdOlx1NFBrwbBdqduBenV8ceUIALkHcjM44te1uZNB21ZApaqJHlRVEu0v_rHz_Or_raeafT590yxUdLjrKDhjCnzc7YzrW7cWad_PXAtF0j_mBMc"
+
+     */
+
     useEffect(() => {
-        const link = window.location.href
-        const error = checkLinkForError(link)
-        if (!error) {
-            const info = processValidLink(link)
-            if (info) {
-                localStorage.setItem('spotify-auth', JSON.stringify(info))
-                setAuth(JSON.parse(localStorage.getItem('spotify-auth')));
-            } else {
-                window.location.href = 'http://localhost:3000/login'
-            }
+        const tokens = JSON.parse(localStorage.getItem('spotify-access-token'))
+        if (!tokens || tokens.accessToken === undefined) {
+            window.location.href = 'http://localhost:3000/login'
+        } else {
+            console.log(tokens.accessToken)
         }
     }, [])
 
