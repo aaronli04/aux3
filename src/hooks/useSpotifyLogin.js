@@ -52,10 +52,8 @@ function useSpotifyLogin() {
     }
   }
 
-
   async function requestAccessToken(info) {
     const authCode = info.code;
-    console.log(authCode)
     const authState = info.state;
     let accessToken, refreshToken, scope;
     if (!authState) { return null; }
@@ -69,7 +67,6 @@ function useSpotifyLogin() {
         body: `grant_type=authorization_code&code=${authCode}&redirect_uri=${process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}`
       });
       const result = await response.json();
-      console.log(result);
       if (result.error) {
         localStorage.removeItem('spotify-access-token')
         return null;
@@ -102,7 +99,6 @@ function useSpotifyLogin() {
       })
       .then(response => response.json())
       .then(result => {
-        console.log(result)
         if (result.error) {
           return;
         }

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { getPCN } from "@/utils/classes"
-import useSpotifyLogin from "../hooks/useSpotifyLogin"
+import useSpotifyLogin from "@/hooks/useSpotifyLogin"
 
 const className = 'callback'
 const pcn = getPCN(className)
@@ -10,7 +10,7 @@ export default function CallbackComponent() {
 
 
     useEffect(() => {
-        if (typeof window !== 'undefined') { // Check if window object is available (client side)
+        if (typeof window !== 'undefined') {
             const fetchData = async () => {
                 const link = window.location.href;
                 const error = checkLinkForError(link);
@@ -19,8 +19,7 @@ export default function CallbackComponent() {
                     const info = processValidLink(link);
                     if (info) {
                         const token = await requestAccessToken(info);
-                        console.log(token)
-                        // window.location.href = 'http://localhost:3000/create';
+                        window.location.href = 'http://localhost:3000/create';
                     } else {
                         window.location.href = 'http://localhost:3000/login';
                     }
