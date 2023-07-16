@@ -1,0 +1,16 @@
+.callback__liner {
+    display: flex;
+    flex-direction: column;
+}
+
+.callback__title-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.callback__button-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

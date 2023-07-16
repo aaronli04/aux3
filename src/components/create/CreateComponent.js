@@ -1,29 +1,22 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import { getPCN } from "@/utils/classes"
-import useSpotifyAccess from "../hooks/useSpotifyAccess"
+import useSpotifyLogin from "../hooks/useSpotifyLogin"
 
 const className = 'create'
 const pcn = getPCN(className)
 
 export default function CreateComponent() {
-    const { processValidLink, checkLinkForError, requestAccessToken } = useSpotifyAccess();
-    const [auth, setAuth] = useState();
-
+    const {refreshAccessToken} = useSpotifyLogin()
     function handleClick() {
-        requestAccessToken(auth)
+        refreshAccessToken();
+        console.log('creating a room')
     }
 
     useEffect(() => {
-        const link = window.location.href
-        const error = checkLinkForError(link)
-        if (!error) {
-            const info = processValidLink(link)
-            if (info) {
-                localStorage.setItem('spotify-auth', JSON.stringify(info))
-                setAuth(JSON.parse(localStorage.getItem('spotify-auth')));
-            } else {
-                window.location.href = 'http://localhost:3000/login'
-            }
+        const tokens = JSON.parse(localStorage.getItem('spotify-access-token'))
+        console.log(tokens)
+        if (!tokens || tokens.accessToken === undefined) {
+            // window.location.href = 'http://localhost:3000/login'
         }
     }, [])
 
