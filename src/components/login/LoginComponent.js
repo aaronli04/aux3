@@ -5,7 +5,7 @@ import useSpotifyLogin from "@/hooks/useSpotifyLogin"
 const className = 'login'
 const pcn = getPCN(className)
 
-export default function CreateComponent() {
+export default function LoginComponent() {
     const { generateAuthorizationCode } = useSpotifyLogin();
 
     function handleClick() {

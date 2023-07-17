@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { getPCN } from "@/utils/classes"
 import useSpotifyLogin from "@/hooks/useSpotifyLogin"
+import { paths } from "@/utils/nav"
 
 const className = 'create'
 const pcn = getPCN(className)
@@ -17,7 +18,7 @@ export default function CreateComponent() {
       
         const fetchData = async () => {
           if (!tokens || tokens.accessToken === undefined) {
-            window.location.href = 'http://localhost:3000/login';
+            window.location.href = paths.LOGIN;
           } else {
             await refreshAccessToken();
             console.log(localStorage.getItem('spotify-refresh-token'));
@@ -26,7 +27,6 @@ export default function CreateComponent() {
       
         fetchData();
       }, []);
-
 
     return (
         <div className={className}>

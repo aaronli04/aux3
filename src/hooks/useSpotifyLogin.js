@@ -1,3 +1,4 @@
+import { parse } from '@/utils/json';
 import { generateId } from '@/utils/random';
 
 function useSpotifyLogin() {
@@ -32,7 +33,7 @@ function useSpotifyLogin() {
     return {code: code, state: state}
   }
 
-  async function generateAuthorizationCode() {
+  function generateAuthorizationCode() {
     try {
       const state = generateId(16);
       const scope = 'user-read-playback-state user-modify-playback-state user-read-email playlist-modify-public';
@@ -84,7 +85,7 @@ function useSpotifyLogin() {
   }
 
   async function refreshAccessToken() {
-    const access = JSON.parse(localStorage.getItem('spotify-access-token'));
+    const access = parse(localStorage.getItem('spotify-access-token'));
     const refreshToken = access.refreshToken;
     let newToken;
     if (!refreshToken) { return }
