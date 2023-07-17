@@ -1,4 +1,5 @@
 import { parse } from '@/utils/json';
+import { localStorageGet, localStorageRemove, localStorageSet } from '@/utils/localstorage';
 import { generateId } from '@/utils/random';
 
 function useSpotifyLogin() {
@@ -69,14 +70,14 @@ function useSpotifyLogin() {
       });
       const result = await response.json();
       if (result.error) {
-        localStorage.removeItem('spotify-access-token')
+        localStorageRemove('spotify-access-token')
         return null;
       }
       accessToken = result.access_token;
       refreshToken = result.refresh_token;
       scope = result.scope;
       const info = { accessToken, refreshToken, scope };
-      localStorage.setItem('spotify-access-token', JSON.stringify(info));
+      localStorageSet('spotify-access-token', JSON.stringify(info));
       return info;
     } catch (err) {
       console.log(err);
@@ -85,7 +86,7 @@ function useSpotifyLogin() {
   }
 
   async function refreshAccessToken() {
-    const access = parse(localStorage.getItem('spotify-access-token'));
+    const access = parse(localStorageGet('spotify-access-token'));
     const refreshToken = access.refreshToken;
     let newToken;
     if (!refreshToken) { return }
@@ -107,7 +108,7 @@ function useSpotifyLogin() {
         newToken = result.access_token;
       })
 
-      localStorage.setItem('spotify-refresh-token', newToken);
+      localStorageSet('spotify-refresh-token', newToken);
       return newToken
     } catch (err) {
       console.log(err)

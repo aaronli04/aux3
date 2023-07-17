@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import { getPCN } from "@/utils/classes"
 import useSpotifyLogin from "@/hooks/useSpotifyLogin"
 import { paths } from "@/utils/nav"
+import { localStorageGet } from "@/utils/localstorage"
 
 const className = 'create'
 const pcn = getPCN(className)
@@ -14,14 +15,14 @@ export default function CreateComponent() {
     }
 
     useEffect(() => {
-        const tokens = JSON.parse(localStorage.getItem('spotify-access-token'));
+        const tokens = JSON.parse(localStorageGet('spotify-access-token'));
       
         const fetchData = async () => {
           if (!tokens || tokens.accessToken === undefined) {
             window.location.href = paths.LOGIN;
           } else {
             await refreshAccessToken();
-            console.log(localStorage.getItem('spotify-refresh-token'));
+            console.log(localStorageGet('spotify-refresh-token'));
           }
         };
       
