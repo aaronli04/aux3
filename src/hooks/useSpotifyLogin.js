@@ -1,3 +1,4 @@
+import constants from '@/utils/constants';
 import { parse } from '@/utils/json';
 import { localStorageGet, localStorageRemove, localStorageSet } from '@/utils/localStorage';
 import { generateId } from '@/utils/random';
@@ -31,13 +32,13 @@ function useSpotifyLogin() {
       return null;
     }
 
-    return {code: code, state: state}
+    return { code: code, state: state }
   }
 
   function generateAuthorizationCode() {
     try {
       const state = generateId(16);
-      const scope = 'user-read-playback-state user-modify-playback-state user-read-email playlist-modify-public';
+      const scope = constants.SPOTIFY_SCOPES;
 
       const authorizeUrl = `https://accounts.spotify.com/authorize?${new URLSearchParams({
         response_type: 'code',
@@ -99,15 +100,11 @@ function useSpotifyLogin() {
         },
         body: `grant_type=refresh_token&refresh_token=${refreshToken}`
       })
-      .then(response => response.json())
-      .then(result => {
-        console.log(result)
-        if (result.error) {
-          return;
-        }
-        newToken = result.access_token;
-      })
-
+      const result = await response.json()
+      if (result.error) {
+        return;
+      }
+      newToken = result.access_token;
       localStorageSet('spotify-refresh-token', newToken);
       return newToken
     } catch (err) {
@@ -115,7 +112,6 @@ function useSpotifyLogin() {
       return null
     }
   }
-
 
   return {
     checkLinkForError: checkLinkForError,

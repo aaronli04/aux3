@@ -1,26 +1,28 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import { getPCN } from "@/utils/classes"
 import { parse } from "@/utils/json"
 import { localStorageGet } from "@/utils/localStorage"
+import useSpotifyReadUser from "@/hooks/useSpotifyReadUser"
 
 const className = 'home'
 const pcn = getPCN(className)
 
 export default function HomeComponent() {
-    const [user, setUser] = useState()
+    const { readSpotifyUserInfo } = useSpotifyReadUser();
+
     useEffect(() => {
-        var auth = parse(localStorageGet('spotify-auth'));
-        if (auth) {
-            setUser(auth.state)
+        async function fetchUserData() {
+            await readSpotifyUserInfo();
         }
-    }, [])
+        fetchUserData()
+        console.log(parse(localStorageGet('user-spotify-info')))
+    })
 
     return (
         <div className={className}>
             <div className={pcn('__title-section')}>
                 aux3
             </div>
-            {user}
         </div>
     )
 }
