@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { getPCN } from "@/utils/classes"
 import { parse } from "@/utils/json"
-import { localStorageGet } from "@/utils/localstorage"
+import { localStorageGet } from "@/utils/localStorage"
 
 const className = 'home'
 const pcn = getPCN(className)

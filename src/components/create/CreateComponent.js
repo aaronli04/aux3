@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { getPCN } from "@/utils/classes"
 import useSpotifyLogin from "@/hooks/useSpotifyLogin"
 import { paths } from "@/utils/nav"
-import { localStorageGet } from "@/utils/localstorage"
+import { localStorageGet } from "@/utils/localStorage"
 import { parse } from "@/utils/json"
 import CreateRoomModal from "../shared/CreateRoomModal"
 

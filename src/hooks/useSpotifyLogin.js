@@ -1,5 +1,5 @@
 import { parse } from '@/utils/json';
-import { localStorageGet, localStorageRemove, localStorageSet } from '@/utils/localstorage';
+import { localStorageGet, localStorageRemove, localStorageSet } from '@/utils/localStorage';
 import { generateId } from '@/utils/random';
 
 function useSpotifyLogin() {
