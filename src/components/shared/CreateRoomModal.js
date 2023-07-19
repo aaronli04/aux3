@@ -2,11 +2,13 @@ import React, { useState } from "react"
 import { getPCN } from "@/utils/classes"
 import { AiOutlineClose } from 'react-icons/ai';
 import { nonEmptyString } from "@/utils/validators";
+import useRoom from "@/hooks/useRoom";
 
 const className = 'create-room-modal'
 const pcn = getPCN(className)
 
 export default function CreateRoomModal() {
+    const { createRoom } = useRoom()
     const [isOpen, setIsOpen] = useState(false)
     const [roomName, setRoomName] = useState('')
     const [roomPassword, setRoomPassword] = useState('')
@@ -27,7 +29,7 @@ export default function CreateRoomModal() {
         setIsOpen(!isOpen)
     }
 
-    function onSubmit(event) {
+    async function onSubmit(event) {
         event.preventDefault()
         if (!nonEmptyString(roomName)) {
             setRoomNameError('that is not a valid room name')
@@ -40,8 +42,8 @@ export default function CreateRoomModal() {
             setRoomPasswordError('')
         }
         if (nonEmptyString(roomName) && nonEmptyString(roomPassword)) {
-            console.log([roomName, roomPassword])
             // enter supabase insert here
+            await createRoom(roomName, roomPassword)
         }
     }
 

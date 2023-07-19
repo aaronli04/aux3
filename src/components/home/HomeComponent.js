@@ -16,7 +16,7 @@ export default function HomeComponent() {
         }
         fetchUserData()
         console.log(parse(localStorageGet('user-spotify-info')))
-    })
+    }, [])
 
     return (
         <div className={className}>

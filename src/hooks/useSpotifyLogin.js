@@ -2,6 +2,7 @@ import constants from '@/utils/constants';
 import { parse } from '@/utils/json';
 import { localStorageGet, localStorageRemove, localStorageSet } from '@/utils/localStorage';
 import { generateId } from '@/utils/random';
+import { stringify } from 'uuid';
 
 function useSpotifyLogin() {
 
@@ -87,9 +88,8 @@ function useSpotifyLogin() {
   }
 
   async function refreshAccessToken() {
-    const access = parse(localStorageGet('spotify-access-token'));
+    let access = parse(localStorageGet('spotify-access-token'));
     const refreshToken = access.refreshToken;
-    let newToken;
     if (!refreshToken) { return }
     try {
       const response = await fetch('https://accounts.spotify.com/api/token', {
@@ -101,12 +101,13 @@ function useSpotifyLogin() {
         body: `grant_type=refresh_token&refresh_token=${refreshToken}`
       })
       const result = await response.json()
+      console.log(result)
       if (result.error) {
         return;
       }
-      newToken = result.access_token;
-      localStorageSet('spotify-refresh-token', newToken);
-      return newToken
+      access.access_token = result.access_token;
+      localStorageSet('spotify-access-token', JSON.stringify(access));
+      return access
     } catch (err) {
       console.log(err)
       return null
