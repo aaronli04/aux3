@@ -1,5 +1,5 @@
 {
-  "name": "aux3",
+  "name": "auxparty",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,7 +11,6 @@
     "sass:build": "sass src/styles/scss/index.scss:src/styles/css/index.css"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.26.0",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
     "next": "13.4.9",

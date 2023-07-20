@@ -1,6 +1,7 @@
 import { localStorageGet, localStorageSet } from "@/utils/localStorage";
 import { parse, stringify } from "@/utils/json";
 import useSpotifyLogin from "./useSpotifyLogin";
+import { getCookie } from "@/utils/cookies";
 
 function useSpotifyReadUser() {
 
@@ -25,14 +26,15 @@ function useSpotifyReadUser() {
                 return;
             }
             const userData = {
-                // id: 
-                userDisplayName: result.display_name,
-                userEmail: result.email,
-                userSpotifyLink: result.external_urls.spotify,
-                userAPILink: result.href,
-                userId: result.id
+                auxpartyId: getCookie('userID'),
+                spotifyDisplayName: result.display_name,
+                spotifyEmail: result.email,
+                spotifyExternalLink: result.external_urls.spotify,
+                spotifyAPILink: result.href,
+                spotifyUserId: result.id
             }
             localStorageSet('user-spotify-info', stringify(userData))
+            return userData
         } catch (err) {
             console.log(err)
         }

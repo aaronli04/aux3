@@ -1,10 +1,28 @@
 import constants from '@/utils/constants';
-import { parse } from '@/utils/json';
+import { parse, stringify } from '@/utils/json';
 import { localStorageGet, localStorageRemove, localStorageSet } from '@/utils/localStorage';
 import { generateId } from '@/utils/random';
-import { stringify } from 'uuid';
 
 function useSpotifyLogin() {
+
+  async function createUserAccount(spotifyUserInfo) {
+    const info = stringify(spotifyUserInfo) 
+    console.log(info)
+    if (!spotifyUserInfo) { return }
+    try {
+      const response = fetch('http://localhost:8080/spotify/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: info
+      })
+      const result = (await response).json()
+      console.log(result)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   function checkLinkForError(link) {
     const urlParams = new URLSearchParams(link.split('?')[1]);
@@ -80,6 +98,9 @@ function useSpotifyLogin() {
       scope = result.scope;
       const info = { accessToken, refreshToken, scope };
       localStorageSet('spotify-access-token', JSON.stringify(info));
+      const spotifyUserInfo = parse(localStorageGet('user-spotify-info'));
+      console.log(spotifyUserInfo)
+      await createUserAccount(spotifyUserInfo);
       return info;
     } catch (err) {
       console.log(err);
