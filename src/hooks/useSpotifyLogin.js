@@ -7,10 +7,9 @@ function useSpotifyLogin() {
 
   async function createUserAccount(spotifyUserInfo) {
     const info = stringify(spotifyUserInfo) 
-    console.log(info)
     if (!spotifyUserInfo) { return }
     try {
-      const response = fetch('http://localhost:8080/spotify/login', {
+      const response = fetch(`${NEXT_PUBLIC_BACKEND}/spotify/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
