@@ -7,7 +7,7 @@ const pcn = getPCN(className);
 const links = [
     { name: 'home', path: '/' },
     { name: 'create a room', path: '/create' },
-    { name: 'join a room', path: '/join' }
+    { name: 'join a room', path: '/rooms' }
 ]
 
 export default function NavHeader() {

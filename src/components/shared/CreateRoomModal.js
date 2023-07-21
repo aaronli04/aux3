@@ -29,6 +29,7 @@ export default function CreateRoomModal() {
     function handleOpen() {
         setRoomNameError('')
         setRoomPasswordError('')
+        setRoomExistsError('')
         setIsOpen(!isOpen)
     }
 
