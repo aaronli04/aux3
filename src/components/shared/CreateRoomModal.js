@@ -3,20 +3,20 @@ import { getPCN } from "@/utils/classes"
 import { AiOutlineClose } from 'react-icons/ai';
 import { nonEmptyString } from "@/utils/validators";
 import useRoom from "@/hooks/useRoom";
-import useUser from "@/hooks/useUser";
+import { localStorageGet } from "@/utils/localStorage";
 
 const className = 'create-room-modal'
 const pcn = getPCN(className)
 
 export default function CreateRoomModal() {
     const { getRoom, createRoom } = useRoom()
-    const { getUserInfo } = useUser()
 
     const [isOpen, setIsOpen] = useState(false)
     const [roomName, setRoomName] = useState('')
     const [roomPassword, setRoomPassword] = useState('')
     const [roomNameError, setRoomNameError] = useState('')
     const [roomPasswordError, setRoomPasswordError] = useState('')
+    const [roomExistsError, setRoomExistsError] = useState('')
 
     function handleRoomName(event) {
         setRoomName(event.target.value)
@@ -45,9 +45,10 @@ export default function CreateRoomModal() {
             setRoomPasswordError('')
         }
         if (nonEmptyString(roomName) && nonEmptyString(roomPassword)) {
-            const rooms = await getRoom('b7e989b5-f18d-4cfe-9e3d-ed1c288bacb6')
+            const userId = localStorageGet('user-id')
+            const rooms = await getRoom(userId)
             if (rooms.length > 0) {
-                console.log('room already exists')
+                setRoomExistsError('you already have an active room; end it to create a new one')
                 return
             }
             await createRoom(roomName, roomPassword)
@@ -91,6 +92,9 @@ export default function CreateRoomModal() {
                     <button className={pcn('__submit-button')} onClick={onSubmit}>
                         submit
                     </button>
+                </div>
+                <div>
+                    {roomExistsError && <div className={pcn('__error-message')}>{roomExistsError}</div>}
                 </div>
             </div>
         </div>
