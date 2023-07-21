@@ -2,11 +2,11 @@ import { stringify } from "@/utils/json"
 import { localStorageGet } from "@/utils/localStorage"
 
 function useRoom() {
-    async function getRoom(auxpartyId) {
+    async function getRoom(name) {
         try {
-            if (!auxpartyId) { return }
+            if (!name) { return }
 
-            const body = stringify({ auxpartyId: auxpartyId })
+            const body = stringify({ name: name })
 
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/room/get`, {
                 method: 'POST',

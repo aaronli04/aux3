@@ -22,7 +22,7 @@ export default function RoomPage() {
           </title>
         )}
       </Head>
-      <RoomComponent />
+      <RoomComponent roomName={roomName}/>
     </>
   )
 }
