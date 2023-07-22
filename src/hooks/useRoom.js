@@ -52,9 +52,23 @@ function useRoom() {
         }
     }
 
+    async function getAllRooms() {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/room/get/all`, {
+                method: 'GET'
+            })
+            const result = await response.json()
+            const data = result.data
+            return data
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     return {
         getRoom: getRoom,
-        createRoom: createRoom
+        createRoom: createRoom,
+        getAllRooms: getAllRooms
     }
 }
 
