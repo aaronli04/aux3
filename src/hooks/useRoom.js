@@ -43,7 +43,10 @@ function useRoom() {
                 body: body
             })
             const result = await response.json()
-            console.log(result)
+            if (result.error) {
+                return null
+            }
+            return result
         } catch (err) {
             console.log(err)
         }

@@ -1,67 +1,83 @@
-import React, { useState } from "react"
-import { getPCN } from "@/utils/classes"
+import React, { useState } from "react";
+import { getPCN } from "@/utils/classes";
 import { AiOutlineClose } from 'react-icons/ai';
 import { nonEmptyString } from "@/utils/validators";
 import useRoom from "@/hooks/useRoom";
-import { localStorageGet } from "@/utils/localStorage";
 
-const className = 'create-room-modal'
-const pcn = getPCN(className)
+const className = 'create-room-modal';
+const pcn = getPCN(className);
 
 export default function CreateRoomModal() {
-    const { getRoom, createRoom } = useRoom()
+    const { createRoom } = useRoom();
+    const [isOpen, setIsOpen] = useState(false);
+    const [formData, setFormData] = useState({ roomName: '', roomPassword: ''});
+    const [errors, setErrors] = useState({ roomName: '', roomPassword: '', roomExists: '' });
 
-    const [isOpen, setIsOpen] = useState(false)
-    const [roomName, setRoomName] = useState('')
-    const [roomPassword, setRoomPassword] = useState('')
-    const [roomNameError, setRoomNameError] = useState('')
-    const [roomPasswordError, setRoomPasswordError] = useState('')
-    const [roomExistsError, setRoomExistsError] = useState('')
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
+    };
 
-    function handleRoomName(event) {
-        setRoomName(event.target.value)
-    }
+    const handleOpen = () => {
+        setErrors({
+            roomName: '',
+            roomPassword: '',
+            roomExists: '',
+        });
+        setIsOpen(!isOpen);
+    };
 
-    function handleRoomPassword(event) {
-        setRoomPassword(event.target.value)
-    }
-
-    function handleOpen() {
-        setRoomNameError('')
-        setRoomPasswordError('')
-        setRoomExistsError('')
-        setIsOpen(!isOpen)
-    }
-
-    async function onSubmit(event) {
-        event.preventDefault()
+    const onSubmit = async (event) => {
+        event.preventDefault();
+        const { roomName, roomPassword } = formData;
         if (!nonEmptyString(roomName)) {
-            setRoomNameError('that is not a valid room name')
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                roomName: 'that is not a valid room name',
+            }));
         } else {
-            setRoomNameError('')
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                roomName: '',
+            }));
         }
         if (!nonEmptyString(roomPassword)) {
-            setRoomPasswordError('that is not a valid room password')
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                roomPassword: 'that is not a valid room password',
+            }));
         } else {
-            setRoomPasswordError('')
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                roomPassword: '',
+            }));
         }
         if (nonEmptyString(roomName) && nonEmptyString(roomPassword)) {
-            const userId = localStorageGet('user-id')
-            const rooms = await getRoom(userId)
-            if (rooms.length > 0) {
-                setRoomExistsError('you already have an active room; end it to create a new one')
-                return
+            const room = await createRoom(roomName, roomPassword);
+            if (!room) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    roomExists: 'you already have an active room; end it to create a new one',
+                }));
+                return;
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    roomExists: ''
+                }));
             }
-            await createRoom(roomName, roomPassword)
         }
-    }
+    };
 
     if (!isOpen) {
         return (
             <div className={className}>
                 <button onClick={handleOpen}>create a room</button>
             </div>
-        )
+        );
     }
 
     return (
@@ -79,15 +95,27 @@ export default function CreateRoomModal() {
                     <div className={pcn('__subtitle')}>
                         room name
                     </div>
-                    <input className={pcn('__input-box')} placeholder='enter room name here' onChange={handleRoomName} />
-                    {roomNameError && <div className={pcn('__error-message')}>{roomNameError}</div>}
+                    <input
+                        className={pcn('__input-box')}
+                        placeholder='enter room name here'
+                        name="roomName"
+                        value={formData.roomName}
+                        onChange={handleChange}
+                    />
+                    {errors.roomName && <div className={pcn('__error-message')}>{errors.roomName}</div>}
                 </div>
                 <div className={pcn('__question-section')}>
                     <div className={pcn('__subtitle')}>
                         password
                     </div>
-                    <input className={pcn('__input-box')} placeholder='enter room password here' onChange={handleRoomPassword} />
-                    {roomPasswordError && <div className={pcn('__error-message')}>{roomPasswordError}</div>}
+                    <input
+                        className={pcn('__input-box')}
+                        placeholder='enter room password here'
+                        name="roomPassword"
+                        value={formData.roomPassword}
+                        onChange={handleChange}
+                    />
+                    {errors.roomPassword && <div className={pcn('__error-message')}>{errors.roomPassword}</div>}
                 </div>
                 <div className={pcn('__submit-section')}>
                     <button className={pcn('__submit-button')} onClick={onSubmit}>
@@ -95,9 +123,9 @@ export default function CreateRoomModal() {
                     </button>
                 </div>
                 <div>
-                    {roomExistsError && <div className={pcn('__error-message')}>{roomExistsError}</div>}
+                    {errors.roomExists && <div className={pcn('__error-message')}>{errors.roomExists}</div>}
                 </div>
             </div>
         </div>
-    )
+    );
 }

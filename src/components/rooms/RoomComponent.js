@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react"
 import useRoom from "@/hooks/useRoom"
 import useUser from "@/hooks/useUser";
+import LoginRoomComponent from "./login/LoginRoomComponent";
 
 export default function RoomComponent({ roomName }) {
     const { getRoom } = useRoom();
     const { getUserInfo } = useUser()
 
+    const [loggedIn, setLoggedIn] = useState(false)
     const [roomInfo, setRoomInfo] = useState()
     const [ownerInfo, setOwnerInfo] = useState()
 
@@ -14,14 +16,36 @@ export default function RoomComponent({ roomName }) {
             if (!roomName) { return }
             const roomData = (await getRoom(roomName))[0]
             setRoomInfo(roomData)
+            if (!roomInfo) { return }
             const ownerData = (await getUserInfo(roomInfo.auxpartyId))[0]
             setOwnerInfo(ownerData)
-            console.log(ownerInfo)
         }
         fetchData()
-    }, [roomName])
+    }, [roomName, loggedIn])
+
+    function handleLogin() {
+        setLoggedIn(true)
+    }
+
+    if (!roomInfo) {
+        return (
+            <div>this room does not exist</div>
+        )
+    }
+
+    if (!loggedIn) {
+        return (
+            <LoginRoomComponent password={roomInfo.password} onLogin={handleLogin} />
+        )
+    }
+
+    if (loggedIn && ownerInfo && roomInfo) {
+        return (
+            <div>welcome to {ownerInfo.spotifyDisplayName}&apos;s room</div>
+        )
+    }
 
     return (
-        <div>welcome to {ownerInfo.spotifyDisplayName}&apos;s room</div>
+        <div>loading...</div>
     )
 }
