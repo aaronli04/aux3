@@ -4,7 +4,7 @@ import useSpotifyLogin from "@/hooks/useSpotifyLogin"
 import { paths } from "@/utils/nav"
 import { localStorageGet } from "@/utils/localStorage"
 import { parse } from "@/utils/json"
-import CreateRoomModal from "../shared/CreateRoomModal"
+import CreateRoomComponent from "./CreateRoomComponent"
 
 const className = 'create'
 const pcn = getPCN(className)
@@ -33,7 +33,7 @@ export default function CreateComponent() {
         create a room
       </div>
       <div className={pcn('__modal-section')}>
-        <CreateRoomModal />
+        <CreateRoomComponent />
       </div>
     </div>
   )

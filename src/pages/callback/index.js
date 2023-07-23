@@ -6,7 +6,7 @@ export default function HomePage() {
     <>
       <Head>
         <title>
-          aux3 | callback
+          auxparty | callback
         </title>
       </Head>
       <CallbackComponent />

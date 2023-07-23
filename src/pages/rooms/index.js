@@ -6,7 +6,7 @@ export default function RoomPage() {
     <>
       <Head>
         <title>
-          aux3 | rooms
+          auxparty | rooms
         </title>
       </Head>
       <JoinComponent />

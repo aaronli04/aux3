@@ -6,7 +6,7 @@ export default function HomePage() {
     <>
       <Head>
         <title>
-          aux3 | create
+          auxparty | create
         </title>
       </Head>
       <CreateComponent />

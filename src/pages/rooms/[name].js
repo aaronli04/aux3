@@ -18,7 +18,7 @@ export default function RoomPage() {
       <Head>
         {roomName && (
           <title>
-            aux3 | {roomName}
+            auxparty | {roomName}
           </title>
         )}
       </Head>

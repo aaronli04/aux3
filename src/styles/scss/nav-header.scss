@@ -1,17 +1,23 @@
-.nav-header__liner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+.nav-header {
+    margin-top: 30px;
 
-.nav-header__links-section {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 20px;
-}
-
-.nav-header__link {
-    color: blue;
-    text-decoration: none;
+    .nav-header__liner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        .nav-header__links-section {
+            display: flex;
+            gap: 20px;
+    
+            .nav-header__link {
+                color: adjust-color($color: $lightBlue, $alpha: 1.0);
+                font-size: 18px;
+                line-height: 19px;
+                font-weight: 600;
+                font-family: Semibold;
+                text-decoration: none;
+            }
+        }
+    }
 }
