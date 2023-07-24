@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import useRoom from "@/hooks/useRoom"
+import LoadingComponent from "@/components/shared/LoadingComponent";
 
 export default function JoinComponent() {
     const { getAllRooms } = useRoom();
@@ -15,7 +16,7 @@ export default function JoinComponent() {
 
     if (!rooms) {
         return (
-            <div>loading...</div>
+            <LoadingComponent />
         )
     }
 
