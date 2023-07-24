@@ -10,8 +10,9 @@ export default function RoomPage() {
       const pathname = window.location.pathname;
       const paramsArray = pathname.split('/');
       setRoomName(paramsArray[paramsArray.length - 1]);
+      console.log(roomName)
     }
-  }, []);
+  }, [roomName]);
 
   return (
     <>

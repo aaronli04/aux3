@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ExistingRoomComponent from "./ExistingRoomComponent";
 import { getPCN } from "@/utils/classes";
 import { nonEmptyString } from "@/utils/validators";
 import { localStorageGet } from "@/utils/localStorage";
@@ -18,8 +17,10 @@ export default function CreateRoomComponent() {
         async function fetchData() {
             const userId = localStorageGet('user-id')
             const existingRoom = await getRoomByAuxpartyId(userId)
+            if (!existingRoom) { setExistingRooms(false); return; }
             if (existingRoom.length > 0) {
                 setExistingRooms(true);
+                console.log(existingRoom[0])
             }
         }
         fetchData();
@@ -69,12 +70,6 @@ export default function CreateRoomComponent() {
             }
         }
     };
-
-    if (existingRooms) {
-        return (
-            <ExistingRoomComponent />
-        )
-    }
 
     return (
         <div className={className}>
