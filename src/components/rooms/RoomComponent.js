@@ -4,7 +4,7 @@ import useUser from "@/hooks/useUser";
 import LoginRoomComponent from "./login/LoginRoomComponent";
 
 export default function RoomComponent({ roomName }) {
-    const { getRoom } = useRoom();
+    const { getRoomByName } = useRoom();
     const { getUserInfo } = useUser()
 
     const [loggedIn, setLoggedIn] = useState(false)
@@ -14,8 +14,9 @@ export default function RoomComponent({ roomName }) {
     useEffect(() => {
         async function fetchData() {
             if (!roomName) { return }
-            const roomData = (await getRoom(roomName))[0]
-            setRoomInfo(roomData)
+            const roomData = (await getRoomByName(roomName))
+            if (!roomData) { return }
+            setRoomInfo(roomData[0])
             if (!roomInfo) { return }
             const ownerData = (await getUserInfo(roomInfo.auxpartyId))[0]
             setOwnerInfo(ownerData)

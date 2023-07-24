@@ -29,10 +29,7 @@ export default function CreateComponent() {
 
   return (
     <div className={className}>
-      <div className={pcn('__title-section')}>
-        create a room
-      </div>
-      <div className={pcn('__modal-section')}>
+      <div className={pcn('__liner')}>
         <CreateRoomComponent />
       </div>
     </div>
