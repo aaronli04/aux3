@@ -1,0 +1,84 @@
+.join {
+    margin-top: 50px;
+
+    .join__liner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .join__title {
+            font-family: Bold;
+            font-size: 24px;
+            line-height: 29px;
+            color: $darkBlue;
+        }
+
+        .join__search-section {
+            margin-top: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .join__searchbar {
+                height: 30px;
+                width: 281px;
+                border: 1.5px solid adjust-color($color: $darkBlue, $alpha: -0.5);
+                border-radius: 5px;
+                display: flex;
+                align-items: center;    
+                
+                .join__search-icon {
+                    margin-left: 5px;
+                    margin-right: 10px;
+                    color: $darkBlue;
+                }
+
+                .join__search-text {
+                    font-family: Medium;
+                    font-size: 18px;
+                    line-height: 22px;
+                    color: $darkBlue;
+                    border: none;
+                    width: 230px;
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
+
+            .join__separator {
+                border: 2px solid adjust-color($color: $darkBlue, $alpha: -0.9);
+                width: 281px;
+                margin-top: 25px;
+                margin-bottom: 25px;
+            }
+
+            .join__search-results {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+
+                .join__search-result {
+                    border: 1.5px solid adjust-color($color: $darkBlue, $alpha: -0.7);
+                    width: 281px;
+                    height: 45px;
+                    border-radius: 5px;
+                    display: flex;
+                    align-items: center;
+
+                    .join__search-result-title {
+                        width: 261px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        font-family: Medium;
+                        font-size: 18px;
+                        line-height: 22px;
+                        color: $darkBlue;
+                        margin: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
