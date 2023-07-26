@@ -3,6 +3,7 @@ import useRoom from "@/hooks/useRoom"
 import useUser from "@/hooks/useUser";
 import LoginRoomComponent from "./login/LoginRoomComponent";
 import LoadingComponent from "../shared/LoadingComponent";
+import { localStorageGet } from "@/utils/localStorage";
 
 export default function RoomComponent({ roomName }) {
     const { getRoomByName } = useRoom();
@@ -14,7 +15,7 @@ export default function RoomComponent({ roomName }) {
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        async function fetchData() {
+        async function fetchData(userId) {
             if (!roomName) {
                 setIsLoading(false);
                 return;
@@ -25,16 +26,16 @@ export default function RoomComponent({ roomName }) {
                 return;
             }
             setRoomInfo(roomData[0])
-            if (!roomInfo) {
-                setIsLoading(false)
-                return;
-            }
-            const ownerData = (await getUserInfo(roomInfo.auxpartyId))[0]
+            const ownerData = (await getUserInfo(roomData[0].auxpartyId))[0]
             setOwnerInfo(ownerData)
+            if (ownerData.auxpartyId === userId) {
+                setLoggedIn(true)
+            }
             setIsLoading(false)
         }
         if (roomName) {
-            fetchData()
+            const userId = localStorageGet('user-id');
+            fetchData(userId)
         }
     }, [roomName, loggedIn])
 

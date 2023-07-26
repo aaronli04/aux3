@@ -4,6 +4,7 @@
     .login-room-component__liner {
         display: flex;
         flex-direction: column;
+        align-items: center;
 
         .login-room-component__title {
             font-family: Bold;
@@ -12,6 +13,9 @@
             color: $darkBlue;
             display: flex;
             justify-content: center;
+            overflow: wrap;
+            text-align: center;
+            width: 251px;
         }
 
         .login-room-component__body-section {

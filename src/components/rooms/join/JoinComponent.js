@@ -43,8 +43,6 @@ export default function JoinComponent() {
         )
     }
 
-    onChange={handleSearchChange}
-
     return (
         <div className={className}>
             <div className={pcn('__liner')}>

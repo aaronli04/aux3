@@ -9,8 +9,7 @@ export default function RoomPage() {
     if (typeof window !== 'undefined') {
       const pathname = window.location.pathname;
       const paramsArray = pathname.split('/');
-      setRoomName(paramsArray[paramsArray.length - 1]);
-      console.log(roomName)
+      setRoomName(paramsArray[paramsArray.length - 1].replace(/%20/g, ' '));
     }
   }, [roomName]);
 
