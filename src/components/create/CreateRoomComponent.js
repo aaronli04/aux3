@@ -9,7 +9,7 @@ const pcn = getPCN(className);
 
 export default function CreateRoomComponent() {
     const { createRoom, getRoomByAuxpartyId} = useRoom();
-    const [existingRooms, setExistingRooms] = useState(false)
+    const [existingRooms, setExistingRooms] = useState()
     const [formData, setFormData] = useState({ roomName: '', roomPassword: '' });
     const [errors, setErrors] = useState({ roomName: '', roomPassword: '' });
 
@@ -17,10 +17,9 @@ export default function CreateRoomComponent() {
         async function fetchData() {
             const userId = localStorageGet('user-id')
             const existingRoom = await getRoomByAuxpartyId(userId)
-            if (!existingRoom) { setExistingRooms(false); return; }
+            if (!existingRoom) { return; }
             if (existingRoom.length > 0) {
-                setExistingRooms(true);
-                console.log(existingRoom[0])
+                setExistingRooms(existingRoom);
             }
         }
         fetchData();
@@ -36,6 +35,13 @@ export default function CreateRoomComponent() {
             setErrors((prevErrors) => ({
                 ...prevErrors,
                 roomName: '',
+            }));
+        }
+
+        if (roomName.length > 20) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                roomName: 'name must be 20 characters or less',
             }));
         }
 
@@ -70,6 +76,10 @@ export default function CreateRoomComponent() {
             }
         }
     };
+
+    if (existingRooms) {
+        window.location.href = `/rooms/${existingRooms[0].name}`
+    }
 
     return (
         <div className={className}>

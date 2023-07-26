@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import Link from "next/link";
 import useRoom from "@/hooks/useRoom"
 import LoadingComponent from "@/components/shared/LoadingComponent";
 import { getPCN } from "@/utils/classes";
@@ -10,20 +11,39 @@ const pcn = getPCN(className)
 export default function JoinComponent() {
     const { getAllRooms } = useRoom();
     const [rooms, setRooms] = useState();
+    const [filteredRooms, setFilteredRooms] = useState();
 
     useEffect(() => {
         async function fetchData() {
             const roomInfo = await getAllRooms();
             setRooms(roomInfo)
+            setFilteredRooms(roomInfo)
         }
         fetchData()
     }, [])
+
+    function checkItems(search) {
+        let matchingRooms = [];
+        if (!rooms) { return; }
+        for (let i = 0; i < rooms.length; ++i) {
+            if ((rooms[i].name).includes(search)) {
+                matchingRooms.push(rooms[i])
+            }
+        }
+        setFilteredRooms(matchingRooms)
+    }
+
+    function handleSearchChange(event) {
+        checkItems(event.target.value)
+    }
 
     if (!rooms) {
         return (
             <LoadingComponent />
         )
     }
+
+    onChange={handleSearchChange}
 
     return (
         <div className={className}>
@@ -38,12 +58,12 @@ export default function JoinComponent() {
                     </div>
                     <div className={pcn('__separator')} />
                     <div className={pcn('__search-results')}>
-                        {rooms.map((room, index) =>
-                            <div className={pcn('__search-result')} key={index}>
+                        {filteredRooms.map((room, index) =>
+                            <Link href={`rooms/${room.name}`} className={pcn('__search-result')} key={index}>
                                 <div className={pcn('__search-result-title')}>
                                     {room.name}
                                 </div>
-                            </div>
+                            </Link>
                         )}
                     </div>
                 </div>

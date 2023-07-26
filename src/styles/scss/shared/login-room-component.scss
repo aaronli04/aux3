@@ -1,0 +1,86 @@
+.login-room-component {
+    margin-top: 76px;
+
+    .login-room-component__liner {
+        display: flex;
+        flex-direction: column;
+
+        .login-room-component__title {
+            font-family: Bold;
+            font-size: 24px;
+            line-height: 29px;
+            color: $darkBlue;
+            display: flex;
+            justify-content: center;
+        }
+
+        .login-room-component__body-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+
+            .login-room-component__question-section {
+                display: flex;
+                flex-direction: column;
+                width: 251px;
+
+                .login-room-component__subtitle {
+                    font-family: Semibold;
+                    font-size: 20px;
+                    line-height: 24px;
+                    color: $darkBlue;
+                }
+
+                .login-room-component__input-box {
+                    height: 30px;
+                    width: 251px;
+                    border-radius: 5px;
+                    font-family: Regular;
+                    font-size: 16px;
+                    line-height: 18px;
+                    outline: none;
+                    border: 1.5px solid $darkBlue;
+    
+                    &--error {
+                        height: 30px;
+                        width: 251px;
+                        border-radius: 5px;
+                        font-family: Regular;
+                        font-size: 16px;
+                        line-height: 18px;
+                        outline: none;
+                        border: 1.5px solid $darkRed;
+                    }
+                }
+    
+                .login-room-component__error-message {
+                    color: $darkRed;
+                    font-family: Medium;
+                    height: 17px;
+                    font-size: 14px;
+                    line-height: 17px;
+                }
+            }
+        }
+
+        .login-room-component__submit-section {
+            display: flex;
+            justify-content: center;
+
+            .login-room-component__submit-button {
+                border: none;
+                background-color: $lightBlue;
+                border-radius: 10px;
+                height: 50px;
+                width: 251px;
+                cursor: pointer;
+                color: $white;
+                font-family: Semibold;
+                font-size: 20px;
+                line-height: 24px;
+            }
+        }
+    }
+}

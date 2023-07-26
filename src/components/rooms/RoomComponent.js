@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import useRoom from "@/hooks/useRoom"
 import useUser from "@/hooks/useUser";
 import LoginRoomComponent from "./login/LoginRoomComponent";
+import LoadingComponent from "../shared/LoadingComponent";
 
 export default function RoomComponent({ roomName }) {
     const { getRoomByName } = useRoom();
@@ -10,25 +11,42 @@ export default function RoomComponent({ roomName }) {
     const [loggedIn, setLoggedIn] = useState(false)
     const [roomInfo, setRoomInfo] = useState()
     const [ownerInfo, setOwnerInfo] = useState()
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         async function fetchData() {
-            if (!roomName) { return }
+            if (!roomName) {
+                setIsLoading(false);
+                return;
+            }
             const roomData = (await getRoomByName(roomName))
-            if (!roomData) { return }
+            if (!roomData) {
+                setIsLoading(false);
+                return;
+            }
             setRoomInfo(roomData[0])
-            if (!roomInfo) { return }
+            if (!roomInfo) {
+                setIsLoading(false)
+                return;
+            }
             const ownerData = (await getUserInfo(roomInfo.auxpartyId))[0]
             setOwnerInfo(ownerData)
+            setIsLoading(false)
         }
-        fetchData()
+        if (roomName) {
+            fetchData()
+        }
     }, [roomName, loggedIn])
 
     function handleLogin() {
         setLoggedIn(true)
     }
 
-    if (!roomInfo) {
+    if (isLoading) {
+        return <LoadingComponent />
+    }
+
+    if (!roomInfo && !isLoading) {
         return (
             <div>this room does not exist</div>
         )
@@ -36,7 +54,7 @@ export default function RoomComponent({ roomName }) {
 
     if (!loggedIn) {
         return (
-            <LoginRoomComponent password={roomInfo.password} onLogin={handleLogin} />
+            <LoginRoomComponent name={roomInfo.name} password={roomInfo.password} onLogin={handleLogin} />
         )
     }
 
@@ -47,6 +65,6 @@ export default function RoomComponent({ roomName }) {
     }
 
     return (
-        <div>loading...</div>
+        <LoadingComponent />
     )
 }
