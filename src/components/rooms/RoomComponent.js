@@ -4,6 +4,7 @@ import useUser from "@/hooks/useUser";
 import LoginRoomComponent from "./login/LoginRoomComponent";
 import LoadingComponent from "../shared/LoadingComponent";
 import { localStorageGet } from "@/utils/localStorage";
+import LoadedRoomComponent from "./LoadedRoomComponent";
 
 export default function RoomComponent({ roomName }) {
     const { getRoomByName } = useRoom();
@@ -61,7 +62,7 @@ export default function RoomComponent({ roomName }) {
 
     if (loggedIn && ownerInfo && roomInfo) {
         return (
-            <div>welcome to {ownerInfo.spotifyDisplayName}&apos;s room</div>
+            <LoadedRoomComponent roomInfo={roomInfo} ownerInfo={ownerInfo} />
         )
     }
 

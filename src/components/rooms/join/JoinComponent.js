@@ -52,7 +52,7 @@ export default function JoinComponent() {
                 <div className={pcn('__search-section')}>
                     <div className={pcn('__searchbar')}>
                         <GoSearch className={pcn('__search-icon')} size={25} />
-                        <input className={pcn('__search-text')} placeholder='Search' />
+                        <input className={pcn('__search-text')} placeholder='Search' onChange={handleSearchChange} />
                     </div>
                     <div className={pcn('__separator')} />
                     <div className={pcn('__search-results')}>
