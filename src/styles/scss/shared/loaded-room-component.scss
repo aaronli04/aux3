@@ -25,18 +25,21 @@
         .loaded-room-component__body-section {
             display: flex;
             flex-direction: column;
-            margin-top: 25px;
+            margin-top: 20px;
+            align-items: center;
 
             .loaded-room-component__subtitle {
                 font-family: Semibold;
                 font-size: 20px;
                 line-height: 24px;
                 color: $lightBlue;
+                text-align: center;
             }
 
             .loaded-room-component__now-playing {
                 display: flex;
                 flex-direction: column;
+                gap: 10px;
             }
 
             .loaded-room-component__queue-section {
@@ -44,10 +47,34 @@
                 flex-direction: column;
                 align-items: center;
                 margin-top: 30px;
+                gap: 10px;
 
                 .loaded-room-component__queue {
-                    
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                    height: 345px;
+                    overflow: scroll;
                 }
+            }
+        }
+
+        .loaded-room-component__button-section {
+            display: flex;
+            flex-direction: column;
+            margin-top: 32px;
+
+            .loaded-room-component__add-to-queue {
+                background-color: $lightBlue;
+                color: $white;
+                border: none;
+                width: 200px;
+                height: 50px;
+                border-radius: 10px;
+                font-family: Semibold;
+                font-size: 20px;
+                line-height: 24px;
+                cursor: pointer;
             }
         }
     }

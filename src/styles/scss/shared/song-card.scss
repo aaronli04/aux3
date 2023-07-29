@@ -1,0 +1,58 @@
+.song-card {
+    height: 45px;
+
+    .song-card__liner {
+        display: flex;
+        flex-direction: row;
+
+        .song-card__song-info {
+            display: flex;
+            flex-direction: column;
+            width: 130px;
+            gap: 2px;
+            justify-content: center;
+            margin-left: 10px;
+
+            .song-card__title {
+                font-family: Semibold;
+                font-size: 18px;
+                line-height: 22px;
+                color: $darkBlue;
+            }
+
+            .song-card__artist {
+                font-family: Medium;
+                font-size: 16px;
+                line-height: 19px;
+                color: $darkBlue;
+            }
+        }
+
+        .song-card__vote-section {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            .song-card__upvote {
+                border: none;
+                background-color: transparent;
+                color: #1DB954;
+                cursor: pointer;
+            }
+
+            .song-card__downvote {
+                border: none;
+                background-color: transparent;
+                color: #CC0000;
+                cursor: pointer;
+            }
+
+            .song-card__votes {
+                font-family: Semibold;
+                font-size: 18px;
+                line-height: 22px;
+                color: $darkBlue;
+            }
+        }
+    }
+}
