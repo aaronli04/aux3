@@ -9,7 +9,7 @@ export default function SongCard({ song }) {
     return (
         <div className={className}>
             <div className={pcn('__liner')}>
-                <Image src={song.image} width={45} height={45} />
+                <Image src={song.image} alt='album cover' width={45} height={45} />
                 <div className={pcn('__song-info')}>
                     <div className={pcn('__title')}>
                         {song.name}

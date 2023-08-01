@@ -1,6 +1,9 @@
+import React, { useEffect } from "react"
 import { getPCN } from "@/utils/classes"
 import Link from "next/link"
 import SongCard from "../shared/SongCard"
+import { io } from "socket.io-client"
+import { localStorageGet } from "@/utils/localStorage"
 
 const className = 'loaded-room-component'
 const pcn = getPCN(className)
@@ -45,6 +48,19 @@ const songs = [
 ]
 
 export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
+    useEffect(() => {
+        const userId = localStorageGet('user-id')
+        const socket = io(process.env.NEXT_PUBLIC_BACKEND);
+        socket.on("connect", () => {
+            console.log("Connected to socket server")
+        });
+        socket.emit('join-room', userId, roomInfo.auxpartyId)
+
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
+
     return (
         <div className={className}>
             <div className={pcn('__liner')}>
@@ -67,7 +83,7 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                         </div>
                         <div className={pcn('__queue')}>
                             {songs.map((song, index) =>
-                                <SongCard key={index} song={song}/>
+                                <SongCard key={index} song={song} />
                             )}
                         </div>
                     </div>
