@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { getPCN } from "@/utils/classes"
 import Link from "next/link"
 import SongCard from "../shared/SongCard"
@@ -48,18 +48,27 @@ const songs = [
 ]
 
 export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
-    useEffect(() => {
-        const userId = localStorageGet('user-id')
-        const socket = io(process.env.NEXT_PUBLIC_BACKEND);
-        socket.on("connect", () => {
-            console.log("Connected to socket server")
-        });
-        socket.emit('join-room', userId, roomInfo.auxpartyId)
+    const socket = io(process.env.NEXT_PUBLIC_BACKEND);
+    const userId = localStorageGet('user-id')
 
+    useEffect(() => {
+        socket.on('connect', () => {
+            console.log("Connected to socket server");
+        });
+        if (userId && roomInfo) {
+            socket.emit('join-room', userId, roomInfo.auxpartyId);
+        }
         return () => {
-            socket.disconnect();
+            socket.off('connect');
         };
     }, []);
+
+    function handleClick() {
+        socket.emit('add-song', userId, 'Hello, everyone in the room!');
+        socket.on('song-added', (data) => {
+            console.log('Received message:', data.song, 'from user:', data.user);
+        })
+    }
 
     return (
         <div className={className}>
@@ -89,8 +98,8 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                     </div>
                 </div>
                 <div className={pcn('__button-section')}>
-                    <button className={pcn('__add-to-queue')}>
-                        add to queue
+                    <button className={pcn('__add-song')} onClick={handleClick}>
+                        add song
                     </button>
                 </div>
             </div>
