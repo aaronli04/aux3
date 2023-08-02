@@ -51,8 +51,7 @@ function useRoom() {
         const data = {
             auxpartyId: userId,
             roomName,
-            roomPassword,
-            active: true
+            roomPassword
         }
         const body = stringify(data)
         try {

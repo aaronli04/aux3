@@ -74,6 +74,7 @@ export default function CreateRoomComponent() {
             if (!room) {
                 return;
             }
+            window.location.href = `/rooms/${roomName}`
         }
     };
 

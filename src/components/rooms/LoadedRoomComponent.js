@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react"
-import { getPCN } from "@/utils/classes"
+import React, { useEffect, useCallback, useState } from "react"
+import { cn, getPCN } from "@/utils/classes"
 import Link from "next/link"
 import SongCard from "../shared/SongCard"
 import { io } from "socket.io-client"
 import { localStorageGet } from "@/utils/localStorage"
+import SpotifySearch from "../shared/SpotifySearch"
 
 const className = 'loaded-room-component'
 const pcn = getPCN(className)
@@ -48,6 +49,7 @@ const songs = [
 ]
 
 export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
+    const [panelOpen, setPanelOpen] = useState(false)
     const socket = io(process.env.NEXT_PUBLIC_BACKEND);
     const userId = localStorageGet('user-id')
 
@@ -55,53 +57,64 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
         socket.on('connect', () => {
             console.log("Connected to socket server");
         });
-        if (userId && roomInfo) {
-            socket.emit('join-room', userId, roomInfo.auxpartyId);
-        }
+        if (!userId || !roomInfo.auxpartyId) { return; }
+        socket.emit('join-room', userId, roomInfo.auxpartyId);
         return () => {
             socket.off('connect');
         };
     }, []);
 
-    function handleClick() {
-        socket.emit('add-song', userId, 'Hello, everyone in the room!');
-        socket.on('song-added', (data) => {
-            console.log('Received message:', data.song, 'from user:', data.user);
-        })
-    }
+    const renderPanel = useCallback(() => (
+        <div className={panelOpen ? pcn('__panel'): cn(pcn('__panel'), 'hidden')}>
+            <div className={pcn('__title')}>
+                search songs
+            </div>
+            <SpotifySearch />
+            <button className={pcn('__close-button')} onClick={() => setPanelOpen(false)}>
+                return to queue
+            </button>
+        </div>
+    ), [panelOpen])
+
+    const renderContentBodyComp = useCallback(() => (
+        <div className={panelOpen ? cn(pcn('__content-body'), 'hidden'): pcn('__content-body')}>
+            <div className={pcn('__name')}>
+                {roomInfo.name}
+            </div>
+            <Link href={ownerInfo.spotifyExternalLink} className={pcn('__link')}>
+                {ownerInfo.spotifyDisplayName}
+            </Link>
+            <div className={pcn('__body-section')}>
+                <div className={pcn('__now-playing')}>
+                    <div className={pcn('__subtitle')}>
+                        now playing
+                    </div>
+                    <SongCard song={songs[0]} />
+                </div>
+                <div className={pcn('__queue-section')}>
+                    <div className={pcn('__subtitle')}>
+                        queue
+                    </div>
+                    <div className={pcn('__queue')}>
+                        {songs.map((song, index) =>
+                            <SongCard key={index} song={song} />
+                        )}
+                    </div>
+                </div>
+            </div>
+            <div className={pcn('__button-section')}>
+                <button className={pcn('__add-song')} onClick={() => setPanelOpen(true)}>
+                    add song
+                </button>
+            </div>
+        </div>
+    ), [songs, panelOpen])
 
     return (
         <div className={className}>
             <div className={pcn('__liner')}>
-                <div className={pcn('__name')}>
-                    {roomInfo.name}
-                </div>
-                <Link href={ownerInfo.spotifyExternalLink} className={pcn('__link')}>
-                    {ownerInfo.spotifyDisplayName}
-                </Link>
-                <div className={pcn('__body-section')}>
-                    <div className={pcn('__now-playing')}>
-                        <div className={pcn('__subtitle')}>
-                            now playing
-                        </div>
-                        <SongCard song={songs[0]} />
-                    </div>
-                    <div className={pcn('__queue-section')}>
-                        <div className={pcn('__subtitle')}>
-                            queue
-                        </div>
-                        <div className={pcn('__queue')}>
-                            {songs.map((song, index) =>
-                                <SongCard key={index} song={song} />
-                            )}
-                        </div>
-                    </div>
-                </div>
-                <div className={pcn('__button-section')}>
-                    <button className={pcn('__add-song')} onClick={handleClick}>
-                        add song
-                    </button>
-                </div>
+                {renderPanel()}
+                {renderContentBodyComp()}
             </div>
         </div>
     )

@@ -1,14 +1,12 @@
-.page-not-found {
+.room-does-not-exist {
     margin-top: 60px;
 
-    .page-not-found__liner {
+    .room-does-not-exist__liner {
         display: flex;
         flex-direction: column;
         align-items: center;
 
-        .page-not-found__message {
-            width: 285px;
-            text-align: center;
+        .room-does-not-exist__message {
             color: $darkBlue;
             font-family: Bold;
             font-size: 24px;

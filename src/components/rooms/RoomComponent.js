@@ -5,6 +5,7 @@ import LoginRoomComponent from "./login/LoginRoomComponent";
 import LoadingComponent from "../shared/LoadingComponent";
 import { localStorageGet } from "@/utils/localStorage";
 import LoadedRoomComponent from "./LoadedRoomComponent";
+import RoomDoesNotExistComponent from "./RoomDoesNotExistComponent";
 
 export default function RoomComponent({ roomName }) {
     const { getRoomByName } = useRoom();
@@ -27,6 +28,10 @@ export default function RoomComponent({ roomName }) {
                 return;
             }
             setRoomInfo(roomData[0])
+            if (!roomData[0]) {
+                setIsLoading(false);
+                return;
+            }
             const ownerData = (await getUserInfo(roomData[0].auxpartyId))[0]
             setOwnerInfo(ownerData)
             if (ownerData.auxpartyId === userId) {
@@ -50,7 +55,7 @@ export default function RoomComponent({ roomName }) {
 
     if (!roomInfo && !isLoading) {
         return (
-            <div>this room does not exist</div>
+            <RoomDoesNotExistComponent />
         )
     }
 

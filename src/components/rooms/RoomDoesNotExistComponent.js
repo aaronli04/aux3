@@ -1,14 +1,15 @@
+import Link from "next/link"
 import { getPCN } from "@/utils/classes"
 
-const className = 'page-not-found'
+const className = 'room-does-not-exist'
 const pcn = getPCN(className)
 
-export default function PageNotFoundComponent() {
+export default function RoomDoesNotExistComponent() {
     return (
         <div className={className}>
             <div className={pcn('__liner')}>
                 <div className={pcn('__message')}>
-                    sorry the page you&apos;re looking for doesn&apos;t exist
+                    this room does not exist
                 </div>
             </div>
         </div>

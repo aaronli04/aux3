@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useCallback } from "react"
 import Link from "next/link";
 import useRoom from "@/hooks/useRoom"
 import LoadingComponent from "@/components/shared/LoadingComponent";
@@ -22,20 +22,22 @@ export default function JoinComponent() {
         fetchData()
     }, [])
 
-    function checkItems(search) {
+    const checkItems = useCallback((search) => {
         let matchingRooms = [];
-        if (!rooms) { return; }
+        if (!rooms) {
+            return;
+        }
         for (let i = 0; i < rooms.length; ++i) {
-            if ((rooms[i].name).includes(search)) {
-                matchingRooms.push(rooms[i])
+            if (rooms[i].name.includes(search)) {
+                matchingRooms.push(rooms[i]);
             }
         }
-        setFilteredRooms(matchingRooms)
-    }
+        setFilteredRooms(matchingRooms);
+    }, [rooms]);
 
-    function handleSearchChange(event) {
-        checkItems(event.target.value)
-    }
+    const handleSearchChange = useCallback((event) => {
+        checkItems(event.target.value);
+    }, [checkItems]);
 
     if (!rooms) {
         return (
