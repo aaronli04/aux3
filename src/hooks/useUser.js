@@ -1,32 +1,27 @@
-import { stringify } from "@/utils/json"
+import api from "@/utils/api"
 
 function useUser() {
 
-    async function getUserInfo(auxpartyId) {
-        try {
-            if (!auxpartyId) { return }
+  async function createUserAccount(spotifyUserInfo) {
+    if (!spotifyUserInfo) { return }
+    const response = (await api.core.createUserAccount(spotifyUserInfo)).data
+    if (response.error) { return null }
+    const data = response.data
+    return data
+  }
 
-            const body = stringify({ auxpartyId: auxpartyId })
+  async function getUserInfo(auxpartyId) {
+    if (!auxpartyId) { return }
+    const response = (await api.core.getUserInfo({ auxpartyId })).data
+    if (response.error) { return null }
+    const data = response.data
+    return data
+  }
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/user/get`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                  },
-                body: body
-            })
-
-            const result = await response.json()
-            const data = result.data
-            return data
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
-    return {
-        getUserInfo: getUserInfo
-    }
+  return {
+    getUserInfo: getUserInfo,
+    createUserAccount: createUserAccount
+  }
 }
 
 export default useUser

@@ -3,8 +3,9 @@ import humps from 'humps'
 import Timer from './timer'
 import { stringify } from './json'
 import constants from './constants'
+import paths from './core-api/paths'
 
-class ApiClient {
+export class ApiClient {
 
     static methods = {
         GET: 'GET',
@@ -86,19 +87,23 @@ class ApiClient {
     }
 }
 
-// Add new API client extension here
-// class CoreApiClient extends ApiClient {
+class CoreApiClient extends ApiClient {
 
-//     constructor() {
-//         super(constants.CORE_API_ORIGIN)
-//     }
+    constructor() {
+        super(constants.CORE_API_ORIGIN)
+    }
 
-//     searchLiveObjects = async (params) => await this.post('/live-objects/search', params)
-// }
+    createUserAccount = async (params) => await this.post(paths.SPOTIFY_LOGIN, params);
+    getUserInfo = async (params) => await this.post(paths.GET_USER, params);
+
+    getRoomByName = async (params) => await this.post(paths.GET_ROOM_BY_NAME, params)
+    getRoomByAuxpartyId = async (params) => await this.post(paths.GET_ROOM_BY_AUXPARTYID, params)
+    createRoom = async (params) => await this.post(paths.CREATE_ROOM, params)
+    getAllRooms = async () => await this.get(paths.GET_ALL_ROOMS)
+}
 
 const api = {
-    // Add new API clients here
-    // core: new CoreApiClient(),
+    core: new CoreApiClient(),
 }
 
 export default api

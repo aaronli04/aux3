@@ -1,13 +1,15 @@
 import React, { useEffect } from "react"
 import { getPCN } from "@/utils/classes"
 import useSpotifyLogin from "@/hooks/useSpotifyLogin"
+import { checkLinkForError, processValidLink } from "@/utils/spotify/link"
 import { paths } from "@/utils/nav"
 
 const className = 'callback'
 const pcn = getPCN(className)
 
 export default function CallbackComponent() {
-    const { processValidLink, checkLinkForError, requestAccessToken } = useSpotifyLogin();
+
+    const { requestAccessToken } = useSpotifyLogin();
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -32,8 +34,10 @@ export default function CallbackComponent() {
 
     return (
         <div className={className}>
-            <div className={pcn('__title-section')}>
-                callback
+            <div className={pcn('__liner')}>
+                <div className={pcn('__title')}>
+                    logging in...
+                </div>
             </div>
         </div>
     )

@@ -1,57 +1,12 @@
 import constants from '@/utils/constants';
-import { parse, stringify } from '@/utils/json';
+import { parse } from '@/utils/json';
 import { localStorageGet, localStorageRemove, localStorageSet } from '@/utils/localStorage';
 import { generateId } from '@/utils/random';
+import useUser from './useUser';
 
 function useSpotifyLogin() {
 
-  async function createUserAccount(spotifyUserInfo) {
-    const info = stringify(spotifyUserInfo) 
-    if (!spotifyUserInfo) { return }
-    try {
-      const response = fetch(`${NEXT_PUBLIC_BACKEND}/spotify/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: info
-      })
-      const result = (await response).json()
-      console.log(result)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  function checkLinkForError(link) {
-    const urlParams = new URLSearchParams(link.split('?')[1]);
-
-    if (urlParams.has('error')) {
-      const error = urlParams.get('error');
-      return error;
-    }
-
-    return null;
-  }
-
-  function processValidLink(link) {
-    const urlParams = new URLSearchParams(link.split('?')[1])
-    let code, state;
-
-    if (urlParams.has('code')) {
-      code = urlParams.get('code');
-    }
-
-    if (urlParams.has('state')) {
-      state = urlParams.get('state')
-    }
-
-    if (!code || !state) {
-      return null;
-    }
-
-    return { code: code, state: state }
-  }
+  const { createUserAccount } = useUser();
 
   function generateAuthorizationCode() {
     try {
@@ -98,7 +53,6 @@ function useSpotifyLogin() {
       const info = { accessToken, refreshToken, scope };
       localStorageSet('spotify-access-token', JSON.stringify(info));
       const spotifyUserInfo = parse(localStorageGet('user-spotify-info'));
-      console.log(spotifyUserInfo)
       await createUserAccount(spotifyUserInfo);
       return info;
     } catch (err) {
@@ -121,7 +75,6 @@ function useSpotifyLogin() {
         body: `grant_type=refresh_token&refresh_token=${refreshToken}`
       })
       const result = await response.json()
-      console.log(result)
       if (result.error) {
         return;
       }
@@ -135,8 +88,6 @@ function useSpotifyLogin() {
   }
 
   return {
-    checkLinkForError: checkLinkForError,
-    processValidLink: processValidLink,
     generateAuthorizationCode: generateAuthorizationCode,
     requestAccessToken: requestAccessToken,
     refreshAccessToken: refreshAccessToken

@@ -5,6 +5,7 @@ import SongCard from "../shared/SongCard"
 import { io } from "socket.io-client"
 import { localStorageGet } from "@/utils/localStorage"
 import SpotifySearch from "../shared/SpotifySearch"
+import constants from "@/utils/constants"
 
 const className = 'loaded-room-component'
 const pcn = getPCN(className)
@@ -50,7 +51,7 @@ const songs = [
 
 export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
     const [panelOpen, setPanelOpen] = useState(false)
-    const socket = io(process.env.NEXT_PUBLIC_BACKEND);
+    const socket = io(constants.CORE_API_ORIGIN);
     const userId = localStorageGet('user-id')
 
     useEffect(() => {

@@ -11,7 +11,7 @@ const pcn = getPCN(className)
 export default function JoinComponent() {
     const { getAllRooms } = useRoom();
     const [rooms, setRooms] = useState();
-    const [filteredRooms, setFilteredRooms] = useState();
+    const [filteredRooms, setFilteredRooms] = useState([]);
 
     useEffect(() => {
         async function fetchData() {

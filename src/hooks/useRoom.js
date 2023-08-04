@@ -1,89 +1,42 @@
-import { stringify } from "@/utils/json"
-import { localStorageGet } from "@/utils/localStorage"
+import api from "@/utils/api"
+import { getUserId } from "@/utils/userId"
 
 function useRoom() {
     async function getRoomByName(name) {
-        try {
-            if (!name) { return }
-
-            const body = stringify({ name: name })
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/room/get/name`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: body
-            })
-
-            const result = await response.json()
-            const data = result.data
-            return data
-        } catch (err) {
-            console.log(err)
-        }
+        if (!name) { return }
+        const response = (await api.core.getRoomByName({ name })).data
+        if (response.error) { return null }
+        const data = response.data
+        return data
     }
 
     async function getRoomByAuxpartyId(auxpartyId) {
-        try {
-            if (!auxpartyId) { return }
-
-            const body = stringify({ auxpartyId: auxpartyId })
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/room/get/id`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: body
-            })
-
-            const result = await response.json()
-            const data = result.data
-            return data
-        } catch (err) {
-            console.log(err)
-        }
+        if (!auxpartyId) { return }
+        const response = (await api.core.getRoomByAuxpartyId({ auxpartyId })).data
+        if (response.error) { return null }
+        const data = response.data;
+        return data;
     }
 
     async function createRoom(roomName, roomPassword) {
-        const userId = localStorageGet('user-id')
-        const data = {
+        const userId = getUserId()
+        const body = {
             auxpartyId: userId,
             roomName,
             roomPassword
         }
-        const body = stringify(data)
-        try {
-            if (!userId || !roomName || !roomPassword) { return }
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/room/create`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: body
-            })
-            const result = await response.json()
-            if (result.error) {
-                return null
-            }
-            return result
-        } catch (err) {
-            console.log(err)
-        }
+        if (!userId || !roomName || !roomPassword) { return }
+        const response = (await api.core.createRoom(body)).data;
+        if (response.error) { return null }
+        const data = response.data
+        return data
     }
 
     async function getAllRooms() {
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/room/get/all`, {
-                method: 'GET'
-            })
-            const result = await response.json()
-            const data = result.data
-            return data
-        } catch (err) {
-            console.log(err)
-        }
+        const response = (await api.core.getAllRooms()).data;
+        if (response.error) { return null }
+        const data = response.data;
+        return data;
     }
 
     return {
