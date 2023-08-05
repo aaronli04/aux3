@@ -18,9 +18,7 @@ export default function CreateRoomComponent() {
             const userId = localStorageGet('user-id')
             const existingRoom = await getRoomByAuxpartyId(userId)
             if (!existingRoom) { return; }
-            if (existingRoom.length > 0) {
-                setExistingRooms(existingRoom);
-            }
+            setExistingRooms(existingRoom);
         }
         fetchData();
 
@@ -79,7 +77,7 @@ export default function CreateRoomComponent() {
     };
 
     if (existingRooms) {
-        window.location.href = `/rooms/${existingRooms[0].name}`
+        window.location.href = `/rooms/${existingRooms.name}`
     }
 
     return (

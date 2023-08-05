@@ -3,10 +3,12 @@ import { parse } from '@/utils/json';
 import { localStorageGet, localStorageRemove, localStorageSet } from '@/utils/localStorage';
 import { generateId } from '@/utils/random';
 import useUser from './useUser';
+import useSpotifyReadUser from './useSpotifyReadUser';
 
 function useSpotifyLogin() {
 
   const { createUserAccount } = useUser();
+  const { readSpotifyUserInfo } = useSpotifyReadUser();
 
   function generateAuthorizationCode() {
     try {
@@ -52,8 +54,13 @@ function useSpotifyLogin() {
       scope = result.scope;
       const info = { accessToken, refreshToken, scope };
       localStorageSet('spotify-access-token', JSON.stringify(info));
-      const spotifyUserInfo = parse(localStorageGet('user-spotify-info'));
-      await createUserAccount(spotifyUserInfo);
+      const spotifyUserInfo = await readSpotifyUserInfo();
+      const spotifyData = {
+        ...spotifyUserInfo,
+        refresh_token: refreshToken,
+        access_token: accessToken
+      }
+      await createUserAccount(spotifyData);
       return info;
     } catch (err) {
       console.log(err);

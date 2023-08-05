@@ -4,7 +4,7 @@ const prefix = {
     ROOM: '/room'
 }
 
-const paths = {
+const corePaths = {
     HEALTH_CHECK: '/health-check',
     SPOTIFY_LOGIN: `${prefix.SPOTIFY}/login`,
     GET_USER: `${prefix.USER}/get`,
@@ -14,4 +14,4 @@ const paths = {
     CREATE_ROOM: `${prefix.ROOM}/create`
 }
 
-export default paths
+export default corePaths

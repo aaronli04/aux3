@@ -27,13 +27,13 @@ export default function RoomComponent({ roomName }) {
                 setIsLoading(false);
                 return;
             }
-            setRoomInfo(roomData[0])
-            if (!roomData[0]) {
+            setRoomInfo(roomData)
+            const ownerData = (await getUserInfo(roomData.auxpartyId))
+            setOwnerInfo(ownerData)
+            if (!ownerData) {
                 setIsLoading(false);
                 return;
             }
-            const ownerData = (await getUserInfo(roomData[0].auxpartyId))[0]
-            setOwnerInfo(ownerData)
             if (ownerData.auxpartyId === userId) {
                 setLoggedIn(true)
             }

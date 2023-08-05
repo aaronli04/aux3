@@ -1,11 +1,8 @@
 import { localStorageGet, localStorageSet } from "@/utils/localStorage";
 import { parse, stringify } from "@/utils/json";
-import useSpotifyLogin from "./useSpotifyLogin";
-import { getCookie } from "@/utils/cookies";
+import { getUserId } from "@/utils/userId";
 
 function useSpotifyReadUser() {
-
-    const { refreshAccessToken } = useSpotifyLogin();
 
     async function readSpotifyUserInfo() {
         try {
@@ -18,19 +15,15 @@ function useSpotifyReadUser() {
                 }
             })
             const result = await response.json()
-            const error = result.error
-            if (error) {
-                if (error.message === 'The access token expired') {
-                    await refreshAccessToken();
-                }
+            if (result.error) {
                 return;
             }
             const userData = {
-                auxpartyId: getCookie('userID'),
+                auxpartyId: getUserId(),
                 spotifyDisplayName: result.display_name,
                 spotifyEmail: result.email,
                 spotifyExternalLink: result.external_urls.spotify,
-                spotifyAPILink: result.href,
+                spotifyApiLink: result.href,
                 spotifyUserId: result.id
             }
             localStorageSet('user-spotify-info', stringify(userData))

@@ -21,9 +21,9 @@ export default function CallbackComponent() {
                     const info = processValidLink(link);
                     if (info) {
                         const token = await requestAccessToken(info);
-                        window.location.href = paths.CREATE;
+                        // window.location.href = paths.CREATE;
                     } else {
-                        window.location.href = paths.LOGIN;
+                        // window.location.href = paths.LOGIN;
                     }
                 }
             };

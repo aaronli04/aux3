@@ -3,7 +3,7 @@ import humps from 'humps'
 import Timer from './timer'
 import { stringify } from './json'
 import constants from './constants'
-import paths from './core-api/paths'
+import corePaths from './core-api/corePaths'
 
 export class ApiClient {
 
@@ -93,13 +93,13 @@ class CoreApiClient extends ApiClient {
         super(constants.CORE_API_ORIGIN)
     }
 
-    createUserAccount = async (params) => await this.post(paths.SPOTIFY_LOGIN, params);
-    getUserInfo = async (params) => await this.post(paths.GET_USER, params);
+    createUserAccount = async (params) => await this.post(corePaths.SPOTIFY_LOGIN, params);
+    getUserInfo = async (params) => await this.post(corePaths.GET_USER, params);
 
-    getRoomByName = async (params) => await this.post(paths.GET_ROOM_BY_NAME, params)
-    getRoomByAuxpartyId = async (params) => await this.post(paths.GET_ROOM_BY_AUXPARTYID, params)
-    createRoom = async (params) => await this.post(paths.CREATE_ROOM, params)
-    getAllRooms = async () => await this.get(paths.GET_ALL_ROOMS)
+    getRoomByName = async (params) => await this.post(corePaths.GET_ROOM_BY_NAME, params)
+    getRoomByAuxpartyId = async (params) => await this.post(corePaths.GET_ROOM_BY_AUXPARTYID, params)
+    createRoom = async (params) => await this.post(corePaths.CREATE_ROOM, params)
+    getAllRooms = async () => await this.get(corePaths.GET_ALL_ROOMS)
 }
 
 const api = {
