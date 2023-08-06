@@ -51,6 +51,8 @@ const songs = [
 
 export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
     const [panelOpen, setPanelOpen] = useState(false)
+    const [websocket, setWebsocket] = useState(null)
+
     const socket = io(constants.CORE_API_ORIGIN);
     const userId = localStorageGet('user-id')
 
@@ -60,6 +62,7 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
         });
         if (!userId || !roomInfo.auxpartyId) { return; }
         socket.emit('join-room', userId, roomInfo.auxpartyId);
+        setWebsocket(socket);
         return () => {
             socket.off('connect');
         };
@@ -90,7 +93,7 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                     <div className={pcn('__subtitle')}>
                         now playing
                     </div>
-                    <SongCard song={songs[0]} />
+                    <SongCard song={songs[0]} socket={socket} />
                 </div>
                 <div className={pcn('__queue-section')}>
                     <div className={pcn('__subtitle')}>
@@ -98,7 +101,7 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                     </div>
                     <div className={pcn('__queue')}>
                         {songs.map((song, index) =>
-                            <SongCard key={index} song={song} />
+                            <SongCard key={index} song={song} socket={socket} />
                         )}
                     </div>
                 </div>

@@ -36,15 +36,23 @@
             .song-card__upvote {
                 border: none;
                 background-color: transparent;
-                color: #1DB954;
+                color: adjust-color($color: #000, $alpha: -0.9);
                 cursor: pointer;
+
+                &.selected {
+                    color: #1DB954;
+                }
             }
 
             .song-card__downvote {
                 border: none;
                 background-color: transparent;
-                color: #CC0000;
+                color: adjust-color($color: #000, $alpha: -0.9);
                 cursor: pointer;
+
+                &.selected {
+                    color: #CC0000;
+                }
             }
 
             .song-card__votes {

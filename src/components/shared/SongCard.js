@@ -1,11 +1,51 @@
+import React, { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { BiSolidUpvote, BiSolidDownvote } from "react-icons/bi";
-import { getPCN } from "@/utils/classes";
+import { cn, getPCN } from "@/utils/classes";
 
 const className = 'song-card'
 const pcn = getPCN(className)
 
-export default function SongCard({ song }) {
+export default function SongCard({ song, socket }) {
+    const [upvote, setUpvote] = useState(false)
+    const [downvote, setDownvote] = useState(false)
+
+    useEffect(() => {
+        socket.on('pong', () => {
+            console.log('Received pong');
+        });
+
+        return () => {
+            socket.off('pong');
+        };
+    }, [socket]);
+
+    function handleDownvote() {
+        if (upvote) { setUpvote(false) }
+        setDownvote(!downvote)
+        socket.emit('ping');
+    }
+
+    function handleUpvote() {
+        if (downvote) { setDownvote(false) }
+        setUpvote(!upvote)
+        socket.emit('ping');
+    }
+
+    const renderVotes = useCallback(() => (
+        <div className={pcn('__vote-section')}>
+            <button className={downvote ? cn(pcn('__downvote'), 'selected') : pcn('__downvote')} onClick={handleDownvote}>
+                <BiSolidDownvote size='30px' />
+            </button>
+            <div className={pcn('__votes')}>
+                {song.votes}
+            </div>
+            <button className={upvote ? cn(pcn('__upvote'), 'selected') : pcn('__upvote')} onClick={handleUpvote}>
+                <BiSolidUpvote size='30px' />
+            </button>
+        </div>
+    ), [upvote, downvote])
+
     return (
         <div className={className}>
             <div className={pcn('__liner')}>
@@ -18,17 +58,7 @@ export default function SongCard({ song }) {
                         {song.artist}
                     </div>
                 </div>
-                <div className={pcn('__vote-section')}>
-                    <button className={pcn('__downvote')}>
-                        <BiSolidDownvote size='30px'/>
-                    </button>
-                    <div className={pcn('__votes')}>
-                        {song.votes}
-                    </div>
-                    <button className={pcn('__upvote')}>
-                        <BiSolidUpvote size='30px'/>
-                    </button>
-                </div>
+                {renderVotes()}
             </div>
         </div>
     )
