@@ -1,5 +1,5 @@
 .loaded-room-component {
-    margin-top: 50px;
+    margin-top: 30px;
 
     .loaded-room-component__liner {
         display: flex;
@@ -103,6 +103,7 @@
                 display: flex;
                 flex-direction: column;
                 margin-top: 32px;
+                gap: 10px;
     
                 .loaded-room-component__add-song {
                     background-color: $lightBlue;
@@ -116,6 +117,84 @@
                     line-height: 24px;
                     cursor: pointer;
                 }
+
+                .loaded-room-component__delete-room {
+                    background-color: $darkRed;
+                    color: $white;
+                    border: none;
+                    width: 200px;
+                    height: 50px;
+                    border-radius: 10px;
+                    font-family: Semibold;
+                    font-size: 20px;
+                    line-height: 24px;
+                    cursor: pointer;
+
+                    .hidden {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        .loaded-room-component__delete-panel {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+
+            .loaded-room-component__title {
+                font-family: Bold;
+                font-size: 24px;
+                line-height: 29px;
+                color: $darkBlue;
+            }
+
+            .loaded-room-component__warning-message {
+                font-family: Medium;
+                font-size: 18px;
+                line-height: 22px;
+                width: 300px;
+                color: $darkBlue;
+                text-align: center;
+            }
+
+            .loaded-room-component__button-section {
+                margin-top: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+
+                .loaded-room-component__cancel-button {
+                    background-color: $lightBlue;
+                    color: $white;
+                    border: none;
+                    width: 200px;
+                    height: 50px;
+                    border-radius: 10px;
+                    font-family: Semibold;
+                    font-size: 20px;
+                    line-height: 24px;
+                    cursor: pointer;
+                }
+
+                .loaded-room-component__delete-button {
+                    background-color: $darkRed;
+                    color: $white;
+                    border: none;
+                    width: 200px;
+                    height: 50px;
+                    border-radius: 10px;
+                    font-family: Semibold;
+                    font-size: 20px;
+                    line-height: 24px;
+                    cursor: pointer;
+                }
+            }
+
+            &.hidden {
+                display: none;
             }
         }
     }

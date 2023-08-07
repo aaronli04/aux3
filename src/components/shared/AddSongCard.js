@@ -18,7 +18,7 @@ export default function AddSongCard({ song, socket }) {
     }, [socket]);
 
     const addSong = useCallback(() => {
-        console.log(song.name)
+        console.log(song.uri)
     })
 
     return (

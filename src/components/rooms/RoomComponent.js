@@ -3,9 +3,9 @@ import useRoom from "@/hooks/useRoom"
 import useUser from "@/hooks/useUser";
 import LoginRoomComponent from "./login/LoginRoomComponent";
 import LoadingComponent from "../shared/LoadingComponent";
-import { localStorageGet } from "@/utils/localStorage";
 import LoadedRoomComponent from "./LoadedRoomComponent";
 import RoomDoesNotExistComponent from "./RoomDoesNotExistComponent";
+import { getUserId } from "@/utils/userId";
 
 export default function RoomComponent({ roomName }) {
     const { getRoomByName } = useRoom();
@@ -19,28 +19,29 @@ export default function RoomComponent({ roomName }) {
     useEffect(() => {
         async function fetchData(userId) {
             if (!roomName) {
-                setIsLoading(false);
+                setIsLoading(false)
                 return;
             }
             const roomData = (await getRoomByName(roomName))
             if (!roomData) {
-                setIsLoading(false);
-                return;
+                setIsLoading(false)
+                return
             }
+            const roomMembers = roomData.members
             setRoomInfo(roomData)
             const ownerData = (await getUserInfo(roomData.auxpartyId))
             setOwnerInfo(ownerData)
             if (!ownerData) {
-                setIsLoading(false);
-                return;
+                setIsLoading(false)
+                return
             }
-            if (ownerData.auxpartyId === userId) {
+            if (ownerData.auxpartyId === userId || roomMembers.includes(userId)) {
                 setLoggedIn(true)
             }
             setIsLoading(false)
         }
         if (roomName) {
-            const userId = localStorageGet('user-id');
+            const userId = getUserId();
             fetchData(userId)
         }
     }, [roomName, loggedIn])
