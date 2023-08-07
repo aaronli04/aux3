@@ -4,6 +4,7 @@ import Timer from './timer'
 import { stringify } from './json'
 import constants from './constants'
 import corePaths from './core-api/corePaths'
+import spotifyPaths from './spotify/spotifyPaths'
 
 export class ApiClient {
 
@@ -42,7 +43,9 @@ export class ApiClient {
 
     urlEncodedRequest = async ( method, path, params, minRespTime ) => await this.makeRequest(
         `${ path }?${ $.param( params || {} ) }`,
-        { method },
+        {
+            method,
+        },
         minRespTime,
     )
 
@@ -102,8 +105,29 @@ class CoreApiClient extends ApiClient {
     getAllRooms = async () => await this.get(corePaths.GET_ALL_ROOMS)
 }
 
+class SpotifyApiClient extends ApiClient {
+    constructor() {
+        super(constants.SPOTIFY_API_ORIGIN)
+    }
+
+    urlEncodedRequest = async ( method, path, accessToken, params, minRespTime ) => await this.makeRequest(
+        `${ path }?${ $.param( params || {} ) }`,
+        {
+            method,
+            headers: {
+                'Authorization': `Bearer  ${accessToken}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        },
+        minRespTime,
+    )
+
+    searchTrack = async (accessToken, params) => await this.urlEncodedRequest(ApiClient.methods.GET, spotifyPaths.SEARCH, accessToken, params)
+}
+
 const api = {
     core: new CoreApiClient(),
+    spotify: new SpotifyApiClient()
 }
 
 export default api

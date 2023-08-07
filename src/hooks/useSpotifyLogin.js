@@ -39,7 +39,7 @@ function useSpotifyLogin() {
       const response = await fetch('https://accounts.spotify.com/api/token', {
         method: 'POST',
         headers: {
-          'Authorization': 'Basic ' + btoa(process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID + ':' + process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET),
+          'Authorization': constants.SPOTIFY_HEADER_AUTHORIZATION,
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: `grant_type=authorization_code&code=${authCode}&redirect_uri=${process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}`
@@ -76,12 +76,13 @@ function useSpotifyLogin() {
       const response = await fetch('https://accounts.spotify.com/api/token', {
         method: 'POST',
         headers: {
-          'Authorization': 'Basic ' + btoa(process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID + ':' + process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET),
+          'Authorization': constants.SPOTIFY_HEADER_AUTHORIZATION,
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: `grant_type=refresh_token&refresh_token=${refreshToken}`
       })
       const result = await response.json()
+      console.log(result)
       if (result.error) {
         return;
       }

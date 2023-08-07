@@ -1,29 +1,28 @@
 import React, { useState, useCallback } from 'react';
 import { GoSearch } from 'react-icons/go';
 import { getPCN } from "@/utils/classes";
+import useSpotifyTracks from '@/hooks/useSpotifyTracks';
+import AddSongCard from './AddSongCard';
 
 const className = 'spotify-search';
 const pcn = getPCN(className)
 
-export default function SpotifySearch() {
+export default function SpotifySearch({ accessToken, socket }) {
     const [filteredItems, setFilteredItems] = useState([]);
+    const { searchTrack } = useSpotifyTracks();
 
-    const handleEnterKey = useCallback((event) => {
+    const handleEnterKey = useCallback(async (event) => {
         if (event.key === 'Enter') {
-            // search spotify and set filteredItems
             console.log(event.target.value)
-            setFilteredItems([])
+            const results = await searchTrack(accessToken, event.target.value)
+            setFilteredItems(results);
         }
     })
 
     const renderSearchResults = useCallback(() => (
         <div className={pcn('__search-results')}>
             {filteredItems && filteredItems.map((item, index) =>
-                <div className={pcn('__search-result')} key={index}>
-                    <div className={pcn('__search-result-title')}>
-                        {item.name}
-                    </div>
-                </div>
+                <AddSongCard key={index} song={item} socket={socket} />
             )}
         </div>
     ), [filteredItems])
