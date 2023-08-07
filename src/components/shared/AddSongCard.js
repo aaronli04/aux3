@@ -8,7 +8,6 @@ const pcn = getPCN(className)
 
 export default function AddSongCard({ song, socket }) {
     useEffect(() => {
-        console.log(song)
         socket.on('pong', () => {
             console.log('Received pong');
         });
@@ -20,7 +19,6 @@ export default function AddSongCard({ song, socket }) {
 
     const addSong = useCallback(() => {
         console.log(song.name)
-        socket.emit('ping')
     })
 
     return (

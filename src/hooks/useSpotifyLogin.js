@@ -68,9 +68,7 @@ function useSpotifyLogin() {
     }
   }
 
-  async function refreshAccessToken() {
-    let access = parse(localStorageGet('spotify-access-token'));
-    const refreshToken = access.refreshToken;
+  async function refreshAccessToken(refreshToken) {
     if (!refreshToken) { return }
     try {
       const response = await fetch('https://accounts.spotify.com/api/token', {
@@ -82,13 +80,10 @@ function useSpotifyLogin() {
         body: `grant_type=refresh_token&refresh_token=${refreshToken}`
       })
       const result = await response.json()
-      console.log(result)
       if (result.error) {
         return;
       }
-      access.access_token = result.access_token;
-      localStorageSet('spotify-access-token', JSON.stringify(access));
-      return access
+      return result.access_token;
     } catch (err) {
       console.log(err)
       return null

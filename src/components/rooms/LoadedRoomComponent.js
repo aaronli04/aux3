@@ -51,16 +51,24 @@ const songs = [
 
 export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
     const [panelOpen, setPanelOpen] = useState(false)
+    const [owner, setOwner] = useState(ownerInfo)
+    const [room, setRoom] = useState(roomInfo)
 
-    const socket = io(constants.CORE_API_ORIGIN);
+    const socket = io(constants.CORE_API_ORIGIN)
     const userId = localStorageGet('user-id')
 
     useEffect(() => {
         socket.on('connect', () => {
-            console.log("Connected to socket server");
+            console.log("Connected to socket server")
         });
-        if (!userId || !roomInfo.auxpartyId) { return; }
-        socket.emit('join-room', userId, roomInfo.auxpartyId);
+        if (!userId || !room.auxpartyId) { return }
+        socket.emit('join-room', userId, room.auxpartyId)
+        socket.on('access-token-updated', (updatedToken) => {
+            setOwner((prevInfo) => ({
+                ...prevInfo,
+                accessToken: updatedToken,
+            }))
+        })
         return () => {
             socket.off('connect');
         };
@@ -71,20 +79,20 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
             <div className={pcn('__title')}>
                 search songs
             </div>
-            <SpotifySearch accessToken={ownerInfo.accessToken} socket={socket} />
+            <SpotifySearch ownerInfo={owner} roomInfo={room} socket={socket} />
             <button className={pcn('__close-button')} onClick={() => setPanelOpen(false)}>
                 return to queue
             </button>
         </div>
-    ), [panelOpen])
+    ), [panelOpen, owner])
 
     const renderContentBodyComp = useCallback(() => (
         <div className={panelOpen ? cn(pcn('__content-body'), 'hidden'): pcn('__content-body')}>
             <div className={pcn('__name')}>
-                {roomInfo.name}
+                {room.name}
             </div>
-            <Link href={ownerInfo.spotifyExternalLink} className={pcn('__link')}>
-                {ownerInfo.spotifyDisplayName}
+            <Link href={owner.spotifyExternalLink} className={pcn('__link')}>
+                {owner.spotifyDisplayName}
             </Link>
             <div className={pcn('__body-section')}>
                 <div className={pcn('__now-playing')}>

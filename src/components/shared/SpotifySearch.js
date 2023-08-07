@@ -3,19 +3,27 @@ import { GoSearch } from 'react-icons/go';
 import { getPCN } from "@/utils/classes";
 import useSpotifyTracks from '@/hooks/useSpotifyTracks';
 import AddSongCard from './AddSongCard';
+import updateAccessToken from '@/utils/spotify/updateAccessToken';
 
 const className = 'spotify-search';
 const pcn = getPCN(className)
 
-export default function SpotifySearch({ accessToken, socket }) {
+export default function SpotifySearch({ ownerInfo, roomInfo, socket }) {
     const [filteredItems, setFilteredItems] = useState([]);
     const { searchTrack } = useSpotifyTracks();
 
+    const accessToken = ownerInfo.accessToken;
+    const refreshToken = ownerInfo.refreshToken;
+    const ownerId = ownerInfo.auxpartyId;
+
     const handleEnterKey = useCallback(async (event) => {
         if (event.key === 'Enter') {
-            console.log(event.target.value)
-            const results = await searchTrack(accessToken, event.target.value)
-            setFilteredItems(results);
+            const response = await searchTrack(accessToken, refreshToken, event.target.value)
+            setFilteredItems(response.results);
+            let newAccessToken = response.newAccessToken;
+            if (newAccessToken) {
+                updateAccessToken(socket, ownerId, newAccessToken)
+            }
         }
     })
 
