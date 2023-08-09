@@ -1,0 +1,824 @@
+@font-face {
+  font-family: Thin;
+  src: url(../fonts/inter/Inter-Thin.ttf) format("truetype");
+}
+@font-face {
+  font-family: Regular;
+  src: url(../fonts/inter/Inter-Regular.ttf) format("truetype");
+}
+@font-face {
+  font-family: Medium;
+  src: url(../fonts/inter/Inter-Medium.ttf) format("truetype");
+}
+@font-face {
+  font-family: Semibold;
+  src: url(../fonts/inter/Inter-SemiBold.ttf) format("truetype");
+}
+@font-face {
+  font-family: Bold;
+  src: url(../fonts/inter/Inter-Bold.ttf) format("truetype");
+}
+@font-face {
+  font-family: LogoThin;
+  src: url(../fonts/league-spartan/LeagueSpartan-Thin.ttf) format("truetype");
+}
+@font-face {
+  font-family: LogoRegular;
+  src: url(../fonts/league-spartan/LeagueSpartan-Regular.ttf) format("truetype");
+}
+@font-face {
+  font-family: LogoMedium;
+  src: url(../fonts/league-spartan/LeagueSpartan-Medium.ttf) format("truetype");
+}
+@font-face {
+  font-family: LogoSemibold;
+  src: url(../fonts/league-spartan/LeagueSpartan-SemiBold.ttf) format("truetype");
+}
+@font-face {
+  font-family: LogoBold;
+  src: url(../fonts/league-spartan/LeagueSpartan-Bold.ttf) format("truetype");
+}
+.home {
+  width: 100%;
+  height: 100%;
+}
+.home .home__liner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.home .home__liner .home__logo-section {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.home .home__liner .home__logo-section .home__logo-text {
+  font-family: LogoBold;
+  color: #022F40;
+  font-size: 80px;
+  line-height: 100px;
+  letter-spacing: -5px;
+}
+.home .home__liner .home__middle-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+.home .home__liner .home__middle-section .home__image-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.home .home__liner .home__middle-section .home__image-section .home__image-text {
+  font-family: SemiBold;
+  font-size: 17px;
+  line-height: 31px;
+}
+.home .home__liner .home__end-section {
+  margin-top: 50px;
+  font-family: Semibold;
+  font-size: 17px;
+  line-height: 23px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.home .home__liner .home__end-section .home__link {
+  color: #38aecc;
+  text-decoration: none;
+}
+
+.nav-header {
+  margin-top: 30px;
+}
+.nav-header .nav-header__liner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nav-header .nav-header__liner .nav-header__links-section {
+  display: flex;
+  gap: 20px;
+}
+.nav-header .nav-header__liner .nav-header__links-section .nav-header__link {
+  color: #38aecc;
+  font-size: 18px;
+  line-height: 19px;
+  font-weight: 600;
+  font-family: Semibold;
+  text-decoration: none;
+}
+
+.create .create__liner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page-not-found {
+  margin-top: 60px;
+}
+.page-not-found .page-not-found__liner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.page-not-found .page-not-found__liner .page-not-found__message {
+  width: 285px;
+  text-align: center;
+  color: #022F40;
+  font-family: Bold;
+  font-size: 24px;
+  line-height: 29px;
+}
+
+.login {
+  margin-top: 76px;
+}
+.login .login__liner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login .login__liner .login__button-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login .login__liner .login__button-section .login__button-text {
+  font-family: Bold;
+  font-size: 24px;
+  line-height: 29px;
+  color: #022F40;
+}
+.login .login__liner .login__button-section .login__login-button {
+  margin-top: 12px;
+  color: #fff;
+  font-family: Semibold;
+  font-size: 19px;
+  line-height: 23px;
+  background-color: #1DB954;
+  border-radius: 15px;
+  height: 71px;
+  width: 251px;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+}
+.login .login__liner .login__disclaimer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin-top: 100px;
+}
+.login .login__liner .login__disclaimer-section .login__disclaimer-title {
+  font-family: Bold;
+  color: #022F40;
+  font-size: 22px;
+  line-height: 27px;
+}
+.login .login__liner .login__disclaimer-section .login__disclaimer-subtitle {
+  font-family: Semibold;
+  color: #38AECC;
+  font-size: 20px;
+  line-height: 24px;
+  width: 245px;
+  text-align: center;
+}
+
+.callback {
+  margin-top: 50px;
+}
+.callback .callback__liner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.callback .callback__liner .callback__title {
+  font-family: Bold;
+  font-size: 24px;
+  line-height: 29px;
+  color: #022F40;
+}
+
+.create-room-component {
+  margin-top: 76px;
+}
+.create-room-component .create-room-component__liner {
+  display: flex;
+  flex-direction: column;
+}
+.create-room-component .create-room-component__liner .create-room-component__title {
+  display: flex;
+  justify-content: center;
+  font-family: Bold;
+  font-size: 24px;
+  line-height: 29px;
+  color: #022F40;
+}
+.create-room-component .create-room-component__liner .create-room-component__body-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.create-room-component .create-room-component__liner .create-room-component__body-section .create-room-component__question-section {
+  display: flex;
+  flex-direction: column;
+}
+.create-room-component .create-room-component__liner .create-room-component__body-section .create-room-component__question-section .create-room-component__subtitle {
+  font-family: Semibold;
+  font-size: 20px;
+  line-height: 24px;
+  color: #022F40;
+}
+.create-room-component .create-room-component__liner .create-room-component__body-section .create-room-component__question-section .create-room-component__input-box {
+  height: 30px;
+  width: 251px;
+  border-radius: 5px;
+  font-family: Regular;
+  font-size: 16px;
+  line-height: 18px;
+  outline: none;
+  border: 1.5px solid #022F40;
+}
+.create-room-component .create-room-component__liner .create-room-component__body-section .create-room-component__question-section .create-room-component__input-box--error {
+  height: 30px;
+  width: 251px;
+  border-radius: 5px;
+  font-family: Regular;
+  font-size: 16px;
+  line-height: 18px;
+  outline: none;
+  border: 1.5px solid #CC0000;
+}
+.create-room-component .create-room-component__liner .create-room-component__body-section .create-room-component__question-section .create-room-component__error-message {
+  color: #CC0000;
+  font-family: Medium;
+  height: 17px;
+  font-size: 14px;
+  line-height: 17px;
+}
+.create-room-component .create-room-component__liner .create-room-component__submit-section {
+  display: flex;
+  justify-content: center;
+}
+.create-room-component .create-room-component__liner .create-room-component__submit-section .create-room-component__submit-button {
+  border: none;
+  background-color: #38AECC;
+  border-radius: 10px;
+  height: 50px;
+  width: 251px;
+  cursor: pointer;
+  color: #fff;
+  font-family: Semibold;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.loading {
+  margin-top: 200px;
+}
+.loading .loading__liner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.loading .loading__liner .loading__title {
+  font-family: Bold;
+  font-size: 30px;
+  line-height: 36px;
+  color: #022F40;
+}
+
+.join {
+  margin-top: 50px;
+}
+.join .join__liner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.join .join__liner .join__title {
+  font-family: Bold;
+  font-size: 24px;
+  line-height: 29px;
+  color: #022F40;
+}
+.join .join__liner .join__search-section {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.join .join__liner .join__search-section .join__searchbar {
+  height: 30px;
+  width: 281px;
+  border: 1.5px solid rgba(2, 47, 64, 0.5);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+.join .join__liner .join__search-section .join__searchbar .join__search-icon {
+  margin-left: 5px;
+  margin-right: 10px;
+  color: #022F40;
+}
+.join .join__liner .join__search-section .join__searchbar .join__search-text {
+  font-family: Medium;
+  font-size: 18px;
+  line-height: 22px;
+  color: #022F40;
+  border: none;
+  width: 230px;
+}
+.join .join__liner .join__search-section .join__searchbar .join__search-text:focus {
+  outline: none;
+}
+.join .join__liner .join__search-section .join__separator {
+  border: 2px solid rgba(2, 47, 64, 0.1);
+  width: 281px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.join .join__liner .join__search-section .join__search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 500px;
+  overflow: scroll;
+}
+.join .join__liner .join__search-section .join__search-results::-webkit-scrollbar {
+  display: none;
+}
+.join .join__liner .join__search-section .join__search-results .join__search-result {
+  border: 1.5px solid rgba(2, 47, 64, 0.3);
+  width: 281px;
+  height: 45px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.join .join__liner .join__search-section .join__search-results .join__search-result .join__search-result-title {
+  width: 261px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: Medium;
+  font-size: 18px;
+  line-height: 22px;
+  color: #022F40;
+  margin: 10px;
+}
+
+.login-room-component {
+  margin-top: 76px;
+}
+.login-room-component .login-room-component__liner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login-room-component .login-room-component__liner .login-room-component__title {
+  font-family: Bold;
+  font-size: 24px;
+  line-height: 29px;
+  color: #022F40;
+  display: flex;
+  justify-content: center;
+  overflow: wrap;
+  text-align: center;
+  width: 251px;
+}
+.login-room-component .login-room-component__liner .login-room-component__body-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.login-room-component .login-room-component__liner .login-room-component__body-section .login-room-component__question-section {
+  display: flex;
+  flex-direction: column;
+  width: 251px;
+}
+.login-room-component .login-room-component__liner .login-room-component__body-section .login-room-component__question-section .login-room-component__subtitle {
+  font-family: Semibold;
+  font-size: 20px;
+  line-height: 24px;
+  color: #022F40;
+}
+.login-room-component .login-room-component__liner .login-room-component__body-section .login-room-component__question-section .login-room-component__input-box {
+  height: 30px;
+  width: 251px;
+  border-radius: 5px;
+  font-family: Regular;
+  font-size: 16px;
+  line-height: 18px;
+  outline: none;
+  border: 1.5px solid #022F40;
+}
+.login-room-component .login-room-component__liner .login-room-component__body-section .login-room-component__question-section .login-room-component__input-box--error {
+  height: 30px;
+  width: 251px;
+  border-radius: 5px;
+  font-family: Regular;
+  font-size: 16px;
+  line-height: 18px;
+  outline: none;
+  border: 1.5px solid #CC0000;
+}
+.login-room-component .login-room-component__liner .login-room-component__body-section .login-room-component__question-section .login-room-component__error-message {
+  color: #CC0000;
+  font-family: Medium;
+  height: 17px;
+  font-size: 14px;
+  line-height: 17px;
+}
+.login-room-component .login-room-component__liner .login-room-component__submit-section {
+  display: flex;
+  justify-content: center;
+}
+.login-room-component .login-room-component__liner .login-room-component__submit-section .login-room-component__submit-button {
+  border: none;
+  background-color: #38AECC;
+  border-radius: 10px;
+  height: 50px;
+  width: 251px;
+  cursor: pointer;
+  color: #fff;
+  font-family: Semibold;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.loaded-room-component {
+  margin-top: 30px;
+}
+.loaded-room-component .loaded-room-component__liner {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__panel {
+  margin-top: -20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__panel .loaded-room-component__title {
+  font-family: Bold;
+  font-size: 24px;
+  line-height: 29px;
+  color: #022F40;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__panel .loaded-room-component__close-button {
+  background-color: #38AECC;
+  color: #fff;
+  border: none;
+  width: 200px;
+  height: 50px;
+  border-radius: 10px;
+  font-family: Semibold;
+  font-size: 20px;
+  line-height: 24px;
+  cursor: pointer;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__panel.hidden {
+  display: none;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body.hidden {
+  display: none;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body .loaded-room-component__name {
+  font-family: Bold;
+  font-size: 24px;
+  line-height: 29px;
+  color: #022F40;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body .loaded-room-component__link {
+  font-family: Semibold;
+  font-size: 18px;
+  line-height: 22px;
+  color: #022F40;
+  text-decoration: none;
+  cursor: pointer;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body .loaded-room-component__body-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  align-items: center;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body .loaded-room-component__body-section .loaded-room-component__subtitle {
+  font-family: Semibold;
+  font-size: 20px;
+  line-height: 24px;
+  color: #38AECC;
+  text-align: center;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body .loaded-room-component__body-section .loaded-room-component__now-playing {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body .loaded-room-component__body-section .loaded-room-component__queue-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  gap: 10px;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body .loaded-room-component__body-section .loaded-room-component__queue-section .loaded-room-component__queue {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 345px;
+  overflow: scroll;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body .loaded-room-component__button-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: 32px;
+  gap: 10px;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body .loaded-room-component__button-section .loaded-room-component__add-song {
+  background-color: #38AECC;
+  color: #fff;
+  border: none;
+  width: 200px;
+  height: 50px;
+  border-radius: 10px;
+  font-family: Semibold;
+  font-size: 20px;
+  line-height: 24px;
+  cursor: pointer;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body .loaded-room-component__button-section .loaded-room-component__delete-room {
+  background-color: #CC0000;
+  color: #fff;
+  border: none;
+  width: 200px;
+  height: 50px;
+  border-radius: 10px;
+  font-family: Semibold;
+  font-size: 20px;
+  line-height: 24px;
+  cursor: pointer;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body .loaded-room-component__button-section .loaded-room-component__delete-room .hidden {
+  display: none;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel .loaded-room-component__title {
+  font-family: Bold;
+  font-size: 24px;
+  line-height: 29px;
+  color: #022F40;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel .loaded-room-component__warning-message {
+  font-family: Medium;
+  font-size: 18px;
+  line-height: 22px;
+  width: 300px;
+  color: #022F40;
+  text-align: center;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel .loaded-room-component__button-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel .loaded-room-component__button-section .loaded-room-component__cancel-button {
+  background-color: #38AECC;
+  color: #fff;
+  border: none;
+  width: 200px;
+  height: 50px;
+  border-radius: 10px;
+  font-family: Semibold;
+  font-size: 20px;
+  line-height: 24px;
+  cursor: pointer;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel .loaded-room-component__button-section .loaded-room-component__delete-button {
+  background-color: #CC0000;
+  color: #fff;
+  border: none;
+  width: 200px;
+  height: 50px;
+  border-radius: 10px;
+  font-family: Semibold;
+  font-size: 20px;
+  line-height: 24px;
+  cursor: pointer;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel.hidden {
+  display: none;
+}
+
+.song-card {
+  height: 45px;
+}
+.song-card .song-card__liner {
+  display: flex;
+  flex-direction: row;
+}
+.song-card .song-card__liner .song-card__song-info {
+  display: flex;
+  flex-direction: column;
+  width: 130px;
+  gap: 2px;
+  justify-content: center;
+  margin-left: 10px;
+}
+.song-card .song-card__liner .song-card__song-info .song-card__title {
+  font-family: Semibold;
+  font-size: 18px;
+  line-height: 22px;
+  color: #022F40;
+}
+.song-card .song-card__liner .song-card__song-info .song-card__artist {
+  font-family: Medium;
+  font-size: 16px;
+  line-height: 19px;
+  color: #022F40;
+}
+.song-card .song-card__liner .song-card__vote-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.song-card .song-card__liner .song-card__vote-section .song-card__upvote {
+  border: none;
+  background-color: transparent;
+  color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+.song-card .song-card__liner .song-card__vote-section .song-card__upvote.selected {
+  color: #1DB954;
+}
+.song-card .song-card__liner .song-card__vote-section .song-card__downvote {
+  border: none;
+  background-color: transparent;
+  color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+.song-card .song-card__liner .song-card__vote-section .song-card__downvote.selected {
+  color: #CC0000;
+}
+.song-card .song-card__liner .song-card__vote-section .song-card__votes {
+  font-family: Semibold;
+  font-size: 18px;
+  line-height: 22px;
+  color: #022F40;
+}
+
+.room-does-not-exist {
+  margin-top: 60px;
+}
+.room-does-not-exist .room-does-not-exist__liner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.room-does-not-exist .room-does-not-exist__liner .room-does-not-exist__message {
+  color: #022F40;
+  font-family: Bold;
+  font-size: 24px;
+  line-height: 29px;
+}
+
+.spotify-search__liner {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.spotify-search__liner .spotify-search__searchbar {
+  height: 30px;
+  width: 281px;
+  border: 1.5px solid rgba(2, 47, 64, 0.5);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+.spotify-search__liner .spotify-search__searchbar .spotify-search__search-icon {
+  margin-left: 5px;
+  margin-right: 10px;
+  color: #022F40;
+}
+.spotify-search__liner .spotify-search__searchbar .spotify-search__search-text {
+  font-family: Medium;
+  font-size: 18px;
+  line-height: 22px;
+  color: #022F40;
+  border: none;
+  width: 230px;
+}
+.spotify-search__liner .spotify-search__searchbar .spotify-search__search-text:focus {
+  outline: none;
+}
+.spotify-search__liner .spotify-search__separator {
+  border: 2px solid rgba(2, 47, 64, 0.1);
+  width: 281px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.spotify-search__liner .spotify-search__search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 500px;
+  min-height: 500px;
+  overflow: scroll;
+  margin-bottom: 30px;
+}
+.spotify-search__liner .spotify-search__search-results::-webkit-scrollbar {
+  display: none;
+}
+.spotify-search__liner .spotify-search__search-results .spotify-search__search-result {
+  border: 1.5px solid rgba(2, 47, 64, 0.3);
+  width: 281px;
+  height: 45px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.spotify-search__liner .spotify-search__search-results .spotify-search__search-result .spotify-search__search-result-title {
+  width: 261px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: Medium;
+  font-size: 18px;
+  line-height: 22px;
+  color: #022F40;
+  margin: 10px;
+}
+
+.add-song-card {
+  height: 45px;
+}
+.add-song-card .add-song-card__liner {
+  display: flex;
+  flex-direction: row;
+}
+.add-song-card .add-song-card__liner .add-song-card__song-info {
+  display: flex;
+  flex-direction: column;
+  width: 170px;
+  gap: 2px;
+  justify-content: center;
+  margin-left: 10px;
+}
+.add-song-card .add-song-card__liner .add-song-card__song-info .add-song-card__title {
+  font-family: Semibold;
+  font-size: 18px;
+  line-height: 22px;
+  color: #022F40;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.add-song-card .add-song-card__liner .add-song-card__song-info .add-song-card__artist {
+  font-family: Medium;
+  font-size: 16px;
+  line-height: 19px;
+  color: #022F40;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.add-song-card .add-song-card__liner .add-song-card__add-button {
+  margin-left: 20px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  color: #022F40;
+}
+
+/*# sourceMappingURL=index.css.map */
