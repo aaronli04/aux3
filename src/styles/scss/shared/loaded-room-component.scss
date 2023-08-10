@@ -130,7 +130,7 @@
                     line-height: 24px;
                     cursor: pointer;
 
-                    .hidden {
+                    &.hidden {
                         display: none;
                     }
                 }
@@ -179,7 +179,7 @@
                     cursor: pointer;
                 }
 
-                .loaded-room-component__delete-button {
+                .loaded-room-component__delete-room {
                     background-color: $darkRed;
                     color: $white;
                     border: none;
@@ -190,6 +190,10 @@
                     font-size: 20px;
                     line-height: 24px;
                     cursor: pointer;
+
+                    &.hidden {
+                        display: none;
+                    }
                 }
             }
 

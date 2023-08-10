@@ -579,7 +579,7 @@
   line-height: 24px;
   cursor: pointer;
 }
-.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body .loaded-room-component__button-section .loaded-room-component__delete-room .hidden {
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__content-body .loaded-room-component__button-section .loaded-room-component__delete-room.hidden {
   display: none;
 }
 .loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel {
@@ -621,7 +621,7 @@
   line-height: 24px;
   cursor: pointer;
 }
-.loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel .loaded-room-component__button-section .loaded-room-component__delete-button {
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel .loaded-room-component__button-section .loaded-room-component__delete-room {
   background-color: #CC0000;
   color: #fff;
   border: none;
@@ -632,6 +632,9 @@
   font-size: 20px;
   line-height: 24px;
   cursor: pointer;
+}
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel .loaded-room-component__button-section .loaded-room-component__delete-room.hidden {
+  display: none;
 }
 .loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel.hidden {
   display: none;

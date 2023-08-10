@@ -5,6 +5,7 @@ function useRoom() {
     async function getRoomByName(name) {
         if (!name) { return }
         const response = (await api.core.getRoomByName({ name })).data
+        if (!response) { return }
         if (response.error) { return null }
         const data = response.data
         return data
@@ -13,6 +14,7 @@ function useRoom() {
     async function getRoomByAuxpartyId(auxpartyId) {
         if (!auxpartyId) { return }
         const response = (await api.core.getRoomByAuxpartyId({ auxpartyId })).data
+        if (!response) { return }
         if (response.error) { return null }
         const data = response.data;
         return data;
@@ -27,6 +29,7 @@ function useRoom() {
         }
         if (!userId || !roomName || !roomPassword) { return }
         const response = (await api.core.createRoom(body)).data;
+        if (!response) { return }
         if (response.error) { return null }
         const data = response.data
         return data
@@ -34,6 +37,7 @@ function useRoom() {
 
     async function getAllRooms() {
         const response = (await api.core.getAllRooms()).data;
+        if (!response) { return }
         if (response.error) { return null }
         const data = response.data;
         return data;

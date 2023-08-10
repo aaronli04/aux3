@@ -54,7 +54,7 @@ export default function RoomComponent({ roomName }) {
         return <LoadingComponent />
     }
 
-    if (!roomInfo && !isLoading) {
+    if ((!roomInfo || !ownerInfo) && !isLoading) {
         return (
             <RoomDoesNotExistComponent />
         )
