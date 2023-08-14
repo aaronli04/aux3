@@ -1,80 +1,91 @@
 import React, { useState, useEffect } from "react";
 import { getPCN } from "@/utils/classes";
 import { nonEmptyString } from "@/utils/validators";
-import { localStorageGet } from "@/utils/localStorage";
+import { getUserId } from "@/utils/userId";
 import useRoom from "@/hooks/useRoom";
+import useUser from "@/hooks/useUser";
 
-const className = 'create-room-component';
-const pcn = getPCN(className);
+const className = 'create-room-component'
+const pcn = getPCN(className)
 
 export default function CreateRoomComponent() {
-    const { createRoom, getRoomByAuxpartyId} = useRoom();
+    const { createRoom, getRoomByAuxpartyId } = useRoom()
+    const { getUserInfo } = useUser()
+
     const [existingRooms, setExistingRooms] = useState()
-    const [formData, setFormData] = useState({ roomName: '', roomPassword: '' });
-    const [errors, setErrors] = useState({ roomName: '', roomPassword: '' });
+    const [formData, setFormData] = useState({ roomName: '', roomPassword: '' })
+    const [errors, setErrors] = useState({ roomName: '', roomPassword: '' })
 
     useEffect(() => {
         async function fetchData() {
-            const userId = localStorageGet('user-id')
+            const userId = getUserId()
+            const userInfo = await getUserInfo(userId)
+            if (!userInfo) {
+                window.location.href = '/login'
+            }
             const existingRoom = await getRoomByAuxpartyId(userId)
-            if (!existingRoom) { return; }
-            setExistingRooms(existingRoom);
+            if (!existingRoom) { return }
+            setExistingRooms(existingRoom)
         }
-        fetchData();
+        fetchData()
 
-        
-        const { roomName, roomPassword } = formData;
+
+        const { roomName, roomPassword } = formData
         if (!nonEmptyString(roomName)) {
             setErrors((prevErrors) => ({
                 ...prevErrors,
                 roomName: 'enter a valid name',
-            }));
+            }))
         } else {
             setErrors((prevErrors) => ({
                 ...prevErrors,
                 roomName: '',
-            }));
+            }))
         }
 
         if (roomName.length > 20) {
             setErrors((prevErrors) => ({
                 ...prevErrors,
                 roomName: 'name must be 20 characters or less',
-            }));
+            }))
         }
 
         if (!nonEmptyString(roomPassword)) {
             setErrors((prevErrors) => ({
                 ...prevErrors,
                 roomPassword: 'enter a valid password',
-            }));
+            }))
         } else {
             setErrors((prevErrors) => ({
                 ...prevErrors,
                 roomPassword: '',
-            }));
+            }))
         }
-    }, [formData]);
+    }, [formData])
 
     const handleChange = (event) => {
-        const { name, value } = event.target;
+        const { name, value } = event.target
         setFormData((prevFormData) => ({
             ...prevFormData,
             [name]: value,
-        }));
-    };
+        }))
+    }
 
     const onSubmit = async (event) => {
-        event.preventDefault();
-        const { roomName, roomPassword } = formData;
+        event.preventDefault()
+        const { roomName, roomPassword } = formData
         if (nonEmptyString(roomName) && nonEmptyString(roomPassword)) {
-            const room = await createRoom(roomName, roomPassword);
+            const room = await createRoom(roomName, roomPassword)
             if (!room) {
-                return;
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    roomName: 'room with that name already exists',
+                }))
+                return
             }
             window.location.href = `/rooms/${roomName}`
         }
-    };
+    }
 
     if (existingRooms) {
         window.location.href = `/rooms/${existingRooms.name}`

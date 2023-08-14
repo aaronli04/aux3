@@ -621,7 +621,7 @@
   line-height: 24px;
   cursor: pointer;
 }
-.loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel .loaded-room-component__button-section .loaded-room-component__delete-room {
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel .loaded-room-component__button-section .loaded-room-component__delete-button {
   background-color: #CC0000;
   color: #fff;
   border: none;
@@ -633,7 +633,7 @@
   line-height: 24px;
   cursor: pointer;
 }
-.loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel .loaded-room-component__button-section .loaded-room-component__delete-room.hidden {
+.loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel .loaded-room-component__button-section .loaded-room-component__delete-button.hidden {
   display: none;
 }
 .loaded-room-component .loaded-room-component__liner .loaded-room-component__delete-panel.hidden {
