@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import Image from "next/image";
 import { AiOutlinePlus } from "react-icons/ai"
-import { cn, getPCN } from "@/utils/classes";
+import { getPCN } from "@/utils/classes";
 
 const className = 'add-song-card'
 const pcn = getPCN(className)
@@ -9,13 +9,13 @@ const pcn = getPCN(className)
 export default function AddSongCard({ song, socket }) {
     useEffect(() => {
         socket.on('pong', () => {
-            console.log('Received pong');
-        });
+            console.log('Received pong')
+        })
 
         return () => {
-            socket.off('pong');
-        };
-    }, [socket]);
+            socket.off('pong')
+        }
+    }, [socket])
 
     const addSong = useCallback(() => {
         console.log(song.uri)

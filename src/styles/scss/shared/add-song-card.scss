@@ -8,7 +8,8 @@
         .add-song-card__song-info {
             display: flex;
             flex-direction: column;
-            width: 170px;
+            max-width: 170px;
+            min-width: 170px;
             gap: 2px;
             justify-content: center;
             margin-left: 10px;
@@ -35,12 +36,10 @@
         }
 
         .add-song-card__add-button {
-            margin-left: 20px;
+            margin-left: 15px;
             border: none;
             background-color: transparent;
             cursor: pointer;
-            height: 30px;
-            width: 30px;
             color: $darkBlue;
         }
     }

@@ -767,25 +767,6 @@
 .spotify-search__liner .spotify-search__search-results::-webkit-scrollbar {
   display: none;
 }
-.spotify-search__liner .spotify-search__search-results .spotify-search__search-result {
-  border: 1.5px solid rgba(2, 47, 64, 0.3);
-  height: 45px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-.spotify-search__liner .spotify-search__search-results .spotify-search__search-result .spotify-search__search-result-title {
-  width: 261px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-family: Medium;
-  font-size: 18px;
-  line-height: 22px;
-  color: #022F40;
-  margin: 10px;
-}
 
 .add-song-card {
   height: 45px;
@@ -797,7 +778,8 @@
 .add-song-card .add-song-card__liner .add-song-card__song-info {
   display: flex;
   flex-direction: column;
-  width: 170px;
+  max-width: 170px;
+  min-width: 170px;
   gap: 2px;
   justify-content: center;
   margin-left: 10px;
@@ -821,12 +803,10 @@
   text-overflow: ellipsis;
 }
 .add-song-card .add-song-card__liner .add-song-card__add-button {
-  margin-left: 20px;
+  margin-left: 15px;
   border: none;
   background-color: transparent;
   cursor: pointer;
-  height: 30px;
-  width: 30px;
   color: #022F40;
 }
 

@@ -53,26 +53,5 @@
         &::-webkit-scrollbar {
             display: none;
         }
-
-        .spotify-search__search-result {
-            border: 1.5px solid adjust-color($color: $darkBlue, $alpha: -0.7);
-            height: 45px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-
-            .spotify-search__search-result-title {
-                width: 261px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                font-family: Medium;
-                font-size: 18px;
-                line-height: 22px;
-                color: $darkBlue;
-                margin: 10px;
-            }
-        }
     }
 }
