@@ -408,7 +408,6 @@
 .login-room-component .login-room-component__liner .login-room-component__body-section .login-room-component__question-section {
   display: flex;
   flex-direction: column;
-  width: 251px;
 }
 .login-room-component .login-room-component__liner .login-room-component__body-section .login-room-component__question-section .login-room-component__subtitle {
   font-family: Semibold;
@@ -423,6 +422,8 @@
   font-family: Regular;
   font-size: 16px;
   line-height: 18px;
+  padding: 5px;
+  background-color: transparent;
   outline: none;
   border: 1.5px solid #022F40;
 }
@@ -734,7 +735,6 @@
 .spotify-search__liner .spotify-search__searchbar .spotify-search__search-text {
   font-family: Medium;
   font-size: 18px;
-  line-height: 22px;
   color: #022F40;
   border: none;
   width: 230px;

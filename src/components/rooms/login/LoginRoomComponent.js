@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { getPCN } from "@/utils/classes";
 
 const className = 'login-room-component';
@@ -8,14 +8,20 @@ export default function LoginRoomComponent({ name, password, onLogin }) {
     const [passwordGuess, setPasswordGuess] = useState("");
     const [error, setError] = useState(null)
 
-    function onSubmit() {
-        setError(null);
+    const submitPasswordInput = useCallback(async (event) => {
+        setError(null)
+        if (event.key === 'Enter') {
+            checkPassword()
+        }
+    })
+
+    const checkPassword = useCallback(() => {
         if (passwordGuess === password) {
             onLogin();
         } else {
             setError("wrong password, try again");
         }
-    }
+    })
 
     return (
         <div className={className}>
@@ -33,12 +39,13 @@ export default function LoginRoomComponent({ name, password, onLogin }) {
                             className={pcn('__input-box')}
                             value={passwordGuess}
                             onChange={(e) => setPasswordGuess(e.target.value)}
+                            onKeyDown={(e) => submitPasswordInput(e)}
                         />
                         <div className={pcn('__error-message')}>{error}</div>
                     </div>
                 </div>
                 <div className={pcn('__submit-section')}>
-                    <button className={pcn('__submit-button')} onClick={onSubmit}>
+                    <button className={pcn('__submit-button')} onClick={checkPassword} >
                         login
                     </button>
                 </div>

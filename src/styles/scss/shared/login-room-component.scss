@@ -28,7 +28,6 @@
             .login-room-component__question-section {
                 display: flex;
                 flex-direction: column;
-                width: 251px;
 
                 .login-room-component__subtitle {
                     font-family: Semibold;
@@ -44,6 +43,8 @@
                     font-family: Regular;
                     font-size: 16px;
                     line-height: 18px;
+                    padding: 5px;
+                    background-color: transparent;
                     outline: none;
                     border: 1.5px solid $darkBlue;
     
