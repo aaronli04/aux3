@@ -27,8 +27,9 @@ export default function JoinComponent() {
         if (!rooms) {
             return;
         }
+        const sanitizedSearch = search.toLowerCase().replace(/\s/g, "")
         for (let i = 0; i < rooms.length; ++i) {
-            if (rooms[i].name.includes(search)) {
+            if (rooms[i].name.toLowerCase().replace(/\s/g, "").includes(sanitizedSearch)) {
                 matchingRooms.push(rooms[i]);
             }
         }

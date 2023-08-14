@@ -18,14 +18,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 281px;
 
             .join__searchbar {
                 height: 30px;
                 width: 281px;
                 border: 1.5px solid adjust-color($color: $darkBlue, $alpha: -0.5);
+                padding: 5px;
+                background-color: transparent;
                 border-radius: 5px;
                 display: flex;
-                align-items: center;    
+                align-items: center; 
                 
                 .join__search-icon {
                     margin-left: 5px;

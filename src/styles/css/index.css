@@ -317,11 +317,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 281px;
 }
 .join .join__liner .join__search-section .join__searchbar {
   height: 30px;
   width: 281px;
   border: 1.5px solid rgba(2, 47, 64, 0.5);
+  padding: 5px;
+  background-color: transparent;
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -718,11 +721,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 281px;
 }
 .spotify-search__liner .spotify-search__searchbar {
   height: 30px;
-  width: 281px;
   border: 1.5px solid rgba(2, 47, 64, 0.5);
+  padding: 5px;
+  background-color: transparent;
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -756,13 +761,13 @@
   min-height: 500px;
   overflow: scroll;
   margin-bottom: 30px;
+  width: 281px;
 }
 .spotify-search__liner .spotify-search__search-results::-webkit-scrollbar {
   display: none;
 }
 .spotify-search__liner .spotify-search__search-results .spotify-search__search-result {
   border: 1.5px solid rgba(2, 47, 64, 0.3);
-  width: 281px;
   height: 45px;
   border-radius: 5px;
   display: flex;
