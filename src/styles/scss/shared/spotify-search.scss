@@ -3,7 +3,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 281px;
 
     .spotify-search__searchbar {
         height: 30px;
@@ -12,7 +11,8 @@
         background-color: transparent;
         border-radius: 5px;
         display: flex;
-        align-items: center;    
+        align-items: center;   
+        width: 281px; 
         
         .spotify-search__search-icon {
             margin-left: 5px;
@@ -48,6 +48,7 @@
         overflow: scroll;
         margin-bottom: 30px;
         width: 281px;
+        overflow-x: hidden;
 
         &::-webkit-scrollbar {
             display: none;

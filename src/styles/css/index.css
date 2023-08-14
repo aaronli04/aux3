@@ -721,7 +721,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 281px;
 }
 .spotify-search__liner .spotify-search__searchbar {
   height: 30px;
@@ -731,6 +730,7 @@
   border-radius: 5px;
   display: flex;
   align-items: center;
+  width: 281px;
 }
 .spotify-search__liner .spotify-search__searchbar .spotify-search__search-icon {
   margin-left: 5px;
@@ -762,6 +762,7 @@
   overflow: scroll;
   margin-bottom: 30px;
   width: 281px;
+  overflow-x: hidden;
 }
 .spotify-search__liner .spotify-search__search-results::-webkit-scrollbar {
   display: none;
