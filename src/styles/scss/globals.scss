@@ -3,3 +3,8 @@ $lightBlue: #38AECC;
 $darkBlue: #022F40;
 $white: #fff;
 $darkRed: #CC0000;
+
+// Rules
+html {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}

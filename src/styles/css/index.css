@@ -1,3 +1,7 @@
+html {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
 @font-face {
   font-family: Thin;
   src: url(../fonts/inter/Inter-Thin.ttf) format("truetype");
