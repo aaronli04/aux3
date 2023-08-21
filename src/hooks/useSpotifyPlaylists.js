@@ -21,11 +21,31 @@ function useSpotifyPlaylists() {
             }
         }
         const playlistId = response.id
-        return {playlistId, newAccessToken}
+        return { playlistId, newAccessToken }
+    }
+
+    async function addSongToPlaylist(accessToken, refreshToken, playlistId, song) {
+        if (!song || !playlistId) { return }
+        const songUri = song.uri
+        const params = {
+            "uris": [
+                songUri
+            ]
+        }
+        let response = (await api.spotify.addSongToPlaylist(accessToken, playlistId, params)).data
+        let newAccessToken = null;
+        if (response.error) {
+            if (response.error.message === constants.SPOTIFY_ERROR_ACCESS_TOKEN_EXPIRED || response.error.message === constants.SPOTIFY_ERROR_INVALID_ACCESS_TOKEN) {
+                newAccessToken = await refreshAccessToken(refreshToken)
+                response = (await api.spotify.addSongToPlaylist(accessToken, playlistId, params)).data
+            }
+        }
+        return { newAccessToken }
     }
 
     return {
-        createSpotifyPlaylist: createSpotifyPlaylist
+        createSpotifyPlaylist: createSpotifyPlaylist,
+        addSongToPlaylist: addSongToPlaylist
     }
 }
 

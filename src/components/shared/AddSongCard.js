@@ -6,19 +6,11 @@ import { getPCN } from "@/utils/classes";
 const className = 'add-song-card'
 const pcn = getPCN(className)
 
-export default function AddSongCard({ song, socket }) {
-    useEffect(() => {
-        socket.on('pong', () => {
-            console.log('Received pong')
-        })
-
-        return () => {
-            socket.off('pong')
-        }
-    }, [socket])
+export default function AddSongCard({ song, socket, roomInfo }) {
+    const roomId = roomInfo.auxpartyId
 
     const addSong = useCallback(() => {
-        console.log(song.uri)
+        socket.emit('addSong', roomId, song)
     })
 
     return (

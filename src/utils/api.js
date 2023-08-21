@@ -138,6 +138,7 @@ class SpotifyApiClient extends ApiClient {
 
     searchTrack = async (accessToken, params) => await this.urlEncodedRequest(ApiClient.methods.GET, spotifyPaths.SEARCH, accessToken, params)
     createPlaylist = async (accessToken, userId, params) => await this.post(`/v1/users/${userId}/playlists`, accessToken, params)
+    addSongToPlaylist = async (accessToken, playlistId, params) => await this.post(`/v1/playlists/${playlistId}/tracks`, accessToken, params)
 }
 
 const api = {

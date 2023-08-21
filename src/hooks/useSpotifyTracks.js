@@ -1,6 +1,7 @@
 import api from "@/utils/api";
 import constants from "@/utils/constants";
 import useSpotifyLogin from "./useSpotifyLogin";
+import { v4 as uuidv4 } from 'uuid';
 
 function useSpotifyTracks() {
     
@@ -37,7 +38,8 @@ function useSpotifyTracks() {
                 albumCover,
                 artists,
                 name,
-                uri
+                uri,
+                id: uuidv4()
             }
 
             if (!processedURIs.has(uri)) {

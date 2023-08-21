@@ -10,16 +10,6 @@ export default function SongCard({ song, socket }) {
     const [upvote, setUpvote] = useState(false)
     const [downvote, setDownvote] = useState(false)
 
-    useEffect(() => {
-        socket.on('pong', () => {
-            console.log('Received pong');
-        });
-
-        return () => {
-            socket.off('pong');
-        };
-    }, [socket]);
-
     function handleDownvote() {
         if (upvote) { setUpvote(false) }
         setDownvote(!downvote)
@@ -49,7 +39,7 @@ export default function SongCard({ song, socket }) {
     return (
         <div className={className}>
             <div className={pcn('__liner')}>
-                <Image src={song.image} alt='album cover' width={45} height={45} />
+                <Image src={song.albumCover} alt='album cover' width={45} height={45} />
                 <div className={pcn('__song-info')}>
                     <div className={pcn('__title')}>
                         {song.name}

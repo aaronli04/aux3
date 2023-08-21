@@ -6,77 +6,56 @@ import { io } from "socket.io-client"
 import SpotifySearch from "../shared/SpotifySearch"
 import constants from "@/utils/constants"
 import { getUserId } from "@/utils/userId"
+import { parse } from "@/utils/json"
+import useSpotifyPlaylists from "@/hooks/useSpotifyPlaylists"
 
 const className = 'loaded-room-component'
 const pcn = getPCN(className)
 
-const songs = [
-    {
-        name: 'ball w/o you',
-        image: 'https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228',
-        artist: '21 Savage',
-        votes: 123
-    },
-    {
-        name: 'ball w/o you',
-        image: 'https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228',
-        artist: '21 Savage',
-        votes: 123
-    },
-    {
-        name: 'ball w/o you',
-        image: 'https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228',
-        artist: '21 Savage',
-        votes: 123
-    },
-    {
-        name: 'ball w/o you',
-        image: 'https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228',
-        artist: '21 Savage',
-        votes: 123
-    },
-    {
-        name: 'ball w/o you',
-        image: 'https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228',
-        artist: '21 Savage',
-        votes: 123
-    },
-    {
-        name: 'ball w/o you',
-        image: 'https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228',
-        artist: '21 Savage',
-        votes: 123
-    },
-]
-
 export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
+    const { addSongToPlaylist } = useSpotifyPlaylists()
+
     const [panelOpen, setPanelOpen] = useState(false)
     const [owner, setOwner] = useState(ownerInfo)
     const [room, setRoom] = useState(roomInfo)
     const [deletePanel, setDeletePanel] = useState(false)
+    const [songs, setSongs] = useState([])
 
     const socket = io(constants.CORE_API_ORIGIN)
     const userId = getUserId()
 
     useEffect(() => {
-        socket.on('connect', () => {
-            console.log("Connected to socket server")
-        });
+        const existingQueue = parse(room.queue)
+        if (existingQueue) {
+            setSongs(existingQueue)
+        }
         if (!userId || !room.auxpartyId) { return }
-        socket.emit('join-room', userId, room.auxpartyId)
-        socket.on('access-token-updated', (updatedToken) => {
+        socket.emit('joinRoom', userId, room.auxpartyId)
+        socket.on('accessTokenUpdated', (updatedToken) => {
             setOwner((prevInfo) => ({
                 ...prevInfo,
                 accessToken: updatedToken,
             }))
         })
-        socket.on('room-deleted', () =>{
+        socket.on('roomDeleted', () =>{
             window.location.href = '/rooms'
         })
+        socket.on('songAdded', async (song) => {
+            setSongs([...songs, song])
+            const response = await addSongToPlaylist(ownerInfo.accessToken, ownerInfo.refreshToken, roomInfo.playlistId, song)
+            const newAccessToken = response.newAccessToken
+            if (newAccessToken) {
+                updateAccessToken(ownerInfo.auxpartyId, newAccessToken)
+            }
+        })
         return () => {
-            socket.off('connect');
-        };
-    }, []);
+            socket.off('accessTokenUpdated')
+            socket.off('roomDeleted')
+            socket.off('songAdded')
+            socket.off('pong')
+            socket.disconnect()
+        }
+    }, [])
 
     const deleteRoom = useCallback(() => {
         socket.emit('deleteRoom', room.auxpartyId)
@@ -124,14 +103,14 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                         <div className={pcn('__subtitle')}>
                             now playing
                         </div>
-                        <SongCard song={songs[0]} socket={socket} />
+                        {songs[0] && <SongCard song={songs[0]} socket={socket} />}
                     </div>
                     <div className={pcn('__queue-section')}>
                         <div className={pcn('__subtitle')}>
                             queue
                         </div>
                         <div className={pcn('__queue')}>
-                            {songs.map((song, index) =>
+                            {songs.slice(1).map((song, index) =>
                                 <SongCard key={index} song={song} socket={socket} />
                             )}
                         </div>

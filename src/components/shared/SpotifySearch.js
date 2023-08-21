@@ -9,18 +9,18 @@ const className = 'spotify-search';
 const pcn = getPCN(className)
 
 export default function SpotifySearch({ ownerInfo, roomInfo, socket }) {
-    const [filteredItems, setFilteredItems] = useState([]);
-    const { searchTrack } = useSpotifyTracks();
+    const [filteredItems, setFilteredItems] = useState([])
+    const { searchTrack } = useSpotifyTracks()
 
-    const accessToken = ownerInfo.accessToken;
-    const refreshToken = ownerInfo.refreshToken;
-    const ownerId = ownerInfo.auxpartyId;
+    const accessToken = ownerInfo.accessToken
+    const refreshToken = ownerInfo.refreshToken
+    const ownerId = ownerInfo.auxpartyId
 
     const handleEnterKey = useCallback(async (event) => {
         if (event.key === 'Enter') {
             const response = await searchTrack(accessToken, refreshToken, event.target.value)
-            setFilteredItems(response.results);
-            let newAccessToken = response.newAccessToken;
+            setFilteredItems(response.results)
+            let newAccessToken = response.newAccessToken
             if (newAccessToken) {
                 updateAccessToken(socket, ownerId, newAccessToken)
             }
@@ -30,7 +30,7 @@ export default function SpotifySearch({ ownerInfo, roomInfo, socket }) {
     const renderSearchResults = useCallback(() => (
         <div className={pcn('__search-results')}>
             {filteredItems && filteredItems.map((item, index) =>
-                <AddSongCard key={index} song={item} socket={socket} />
+                <AddSongCard key={index} song={item} socket={socket} roomInfo={roomInfo} />
             )}
         </div>
     ), [filteredItems])
