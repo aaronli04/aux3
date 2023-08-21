@@ -7,11 +7,12 @@ const prefix = {
 const corePaths = {
     HEALTH_CHECK: '/health-check',
     SPOTIFY_LOGIN: `${prefix.SPOTIFY}/login`,
+    UPDATE_ACCESS_TOKEN: `${prefix.USER}/update/token`,
     GET_USER: `${prefix.USER}/get`,
     GET_ROOM_BY_NAME: `${prefix.ROOM}/get/name`,
     GET_ROOM_BY_AUXPARTYID: `${prefix.ROOM}/get/id`,
     GET_ALL_ROOMS: `${prefix.ROOM}/get/all`,
-    CREATE_ROOM: `${prefix.ROOM}/create`
+    CREATE_ROOM: `${prefix.ROOM}/create`,
 }
 
 export default corePaths

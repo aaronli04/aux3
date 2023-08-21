@@ -1,0 +1,32 @@
+import api from "@/utils/api";
+import constants from "@/utils/constants";
+import useSpotifyLogin from "./useSpotifyLogin";
+
+function useSpotifyPlaylists() {
+
+    const { refreshAccessToken } = useSpotifyLogin()
+
+    async function createSpotifyPlaylist(accessToken, refreshToken, spotifyUserId, playlistName) {
+        if (!spotifyUserId || !playlistName) { return }
+        const params = {
+            name: playlistName,
+            description: 'welcome to auxparty',
+        }
+        let response = (await api.spotify.createPlaylist(accessToken, spotifyUserId, params)).data
+        let newAccessToken = null;
+        if (response.error) {
+            if (response.error.message === constants.SPOTIFY_ERROR_ACCESS_TOKEN_EXPIRED || response.error.message === constants.SPOTIFY_ERROR_INVALID_ACCESS_TOKEN) {
+                newAccessToken = await refreshAccessToken(refreshToken)
+                response = (await api.spotify.createPlaylist(newAccessToken, spotifyUserId, params)).data
+            }
+        }
+        const playlistId = response.id
+        return {playlistId, newAccessToken}
+    }
+
+    return {
+        createSpotifyPlaylist: createSpotifyPlaylist
+    }
+}
+
+export default useSpotifyPlaylists

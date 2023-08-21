@@ -18,9 +18,18 @@ function useUser() {
     return data
   }
 
+  async function updateAccessToken(auxpartyId, accessToken) {
+    if (!auxpartyId || !accessToken) { return }
+    const response = (await api.core.updateAccessToken({ auxpartyId, accessToken })).data
+    if (response.error) { return null }
+    const data = response.data
+    return data
+  }
+
   return {
-    getUserInfo: getUserInfo,
-    createUserAccount: createUserAccount
+    getUserInfo,
+    createUserAccount,
+    updateAccessToken,
   }
 }
 

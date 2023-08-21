@@ -10,11 +10,12 @@ const pcn = getPCN(className)
 
 export default function CreateRoomComponent() {
     const { createRoom, getRoomByAuxpartyId } = useRoom()
-    const { getUserInfo } = useUser()
+    const { getUserInfo, updateAccessToken } = useUser()
 
     const [existingRooms, setExistingRooms] = useState()
     const [formData, setFormData] = useState({ roomName: '', roomPassword: '' })
     const [errors, setErrors] = useState({ roomName: '', roomPassword: '' })
+    const [userInfo, setUserInfo] = useState()
 
     useEffect(() => {
         async function fetchData() {
@@ -23,12 +24,12 @@ export default function CreateRoomComponent() {
             if (!userInfo) {
                 window.location.href = '/login'
             }
+            setUserInfo(userInfo)
             const existingRoom = await getRoomByAuxpartyId(userId)
             if (!existingRoom) { return }
             setExistingRooms(existingRoom)
         }
         fetchData()
-
 
         const { roomName, roomPassword } = formData
         if (!nonEmptyString(roomName)) {
@@ -75,13 +76,17 @@ export default function CreateRoomComponent() {
         event.preventDefault()
         const { roomName, roomPassword } = formData
         if (nonEmptyString(roomName) && nonEmptyString(roomPassword)) {
-            const room = await createRoom(roomName, roomPassword)
-            if (!room) {
+            const response = await createRoom(roomName, roomPassword)
+            if (!response.data) {
                 setErrors((prevErrors) => ({
                     ...prevErrors,
                     roomName: 'room with that name already exists',
                 }))
                 return
+            }
+            const newAccessToken = response.spotifyResponse.newAccessToken
+            if (newAccessToken) {
+                updateAccessToken(userInfo.auxpartyId, newAccessToken)
             }
             window.location.href = `/rooms/${roomName}`
         }

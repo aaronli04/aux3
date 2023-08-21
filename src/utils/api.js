@@ -96,8 +96,9 @@ class CoreApiClient extends ApiClient {
         super(constants.CORE_API_ORIGIN)
     }
 
-    createUserAccount = async (params) => await this.post(corePaths.SPOTIFY_LOGIN, params);
-    getUserInfo = async (params) => await this.post(corePaths.GET_USER, params);
+    createUserAccount = async (params) => await this.post(corePaths.SPOTIFY_LOGIN, params)
+    getUserInfo = async (params) => await this.post(corePaths.GET_USER, params)
+    updateAccessToken = async (params) => await this.post(corePaths.UPDATE_ACCESS_TOKEN, params)
 
     getRoomByName = async (params) => await this.post(corePaths.GET_ROOM_BY_NAME, params)
     getRoomByAuxpartyId = async (params) => await this.post(corePaths.GET_ROOM_BY_AUXPARTYID, params)
@@ -122,7 +123,21 @@ class SpotifyApiClient extends ApiClient {
         minRespTime,
     )
 
+    jsonRequest = async ( method, path, accessToken, params, minRespTime ) => await this.makeRequest(
+        path,
+        {
+            method,
+            body: stringify( params || {} ),
+            headers: {
+                'Authorization': `Bearer  ${accessToken}`,
+                'Content-Type': 'application/json',
+            },
+        },
+        minRespTime,
+    )
+
     searchTrack = async (accessToken, params) => await this.urlEncodedRequest(ApiClient.methods.GET, spotifyPaths.SEARCH, accessToken, params)
+    createPlaylist = async (accessToken, userId, params) => await this.post(`/v1/users/${userId}/playlists`, accessToken, params)
 }
 
 const api = {

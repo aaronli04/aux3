@@ -3,10 +3,11 @@ import constants from "@/utils/constants";
 import useSpotifyLogin from "./useSpotifyLogin";
 
 function useSpotifyTracks() {
-    const { refreshAccessToken } = useSpotifyLogin();
+    
+    const { refreshAccessToken } = useSpotifyLogin()
 
     async function searchTrack(accessToken, refreshToken, trackName) {
-        if (!trackName) { return; }
+        if (!trackName) { return }
         const params = {
             q: trackName,
             type: 'track'
@@ -15,23 +16,23 @@ function useSpotifyTracks() {
         let newAccessToken = null;
         if (response.error) {
             if (response.error.message === constants.SPOTIFY_ERROR_ACCESS_TOKEN_EXPIRED || response.error.message === constants.SPOTIFY_ERROR_INVALID_ACCESS_TOKEN) {
-                newAccessToken = await refreshAccessToken(refreshToken);
-                response = (await api.spotify.searchTrack(newAccessToken, params)).data;
+                newAccessToken = await refreshAccessToken(refreshToken)
+                response = (await api.spotify.searchTrack(newAccessToken, params)).data
             }
         }
-        const tracks = response.tracks.items;
-        const results = [];
-        const processedURIs = new Set();
+        const tracks = response.tracks.items
+        const results = []
+        const processedURIs = new Set()
         tracks.forEach(track => {
-            const albumCover = track.album.images[0].url;
-            const spotifyArtists = track.artists;
-            let artists = [];
+            const albumCover = track.album.images[0].url
+            const spotifyArtists = track.artists
+            let artists = []
             spotifyArtists.forEach(artist => {
                 artists.push(artist.name)
             })
             artists = artists.join(', ')
-            const name = track.name;
-            const uri = track.uri;
+            const name = track.name
+            const uri = track.uri
             const song = {
                 albumCover,
                 artists,
@@ -40,11 +41,11 @@ function useSpotifyTracks() {
             }
 
             if (!processedURIs.has(uri)) {
-                results.push(song);
-                processedURIs.add(uri);
+                results.push(song)
+                processedURIs.add(uri)
             }
         });
-        return {results, newAccessToken};
+        return {results, newAccessToken}
     }
 
     return {
