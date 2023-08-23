@@ -8,12 +8,14 @@ import constants from "@/utils/constants"
 import { getUserId } from "@/utils/userId"
 import { parse } from "@/utils/json"
 import useSpotifyPlaylists from "@/hooks/useSpotifyPlaylists"
+import useUser from "@/hooks/useUser"
 
 const className = 'loaded-room-component'
 const pcn = getPCN(className)
 
 export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
     const { addSongToPlaylist } = useSpotifyPlaylists()
+    const { updateAccessToken } = useUser()
 
     const [panelOpen, setPanelOpen] = useState(false)
     const [owner, setOwner] = useState(ownerInfo)

@@ -45,7 +45,7 @@ export default function SongCard({ song, socket }) {
                         {song.name}
                     </div>
                     <div className={pcn('__artist')}>
-                        {song.artist}
+                        {song.artists}
                     </div>
                 </div>
                 {renderVotes()}

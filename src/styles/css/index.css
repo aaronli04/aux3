@@ -658,7 +658,8 @@ html {
 .song-card .song-card__liner .song-card__song-info {
   display: flex;
   flex-direction: column;
-  width: 130px;
+  max-width: 170px;
+  min-width: 170px;
   gap: 2px;
   justify-content: center;
   margin-left: 10px;
@@ -668,12 +669,18 @@ html {
   font-size: 18px;
   line-height: 22px;
   color: #022F40;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .song-card .song-card__liner .song-card__song-info .song-card__artist {
   font-family: Medium;
   font-size: 16px;
   line-height: 19px;
   color: #022F40;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .song-card .song-card__liner .song-card__vote-section {
   display: flex;
