@@ -104,6 +104,9 @@ class CoreApiClient extends ApiClient {
     getRoomByAuxpartyId = async (params) => await this.post(corePaths.GET_ROOM_BY_AUXPARTYID, params)
     createRoom = async (params) => await this.post(corePaths.CREATE_ROOM, params)
     getAllRooms = async () => await this.get(corePaths.GET_ALL_ROOMS)
+
+    addVoteToSong = async (params) => await this.post(corePaths.ADD_VOTE, params)
+    getVotesBySong = async (params) => await this.post(corePaths.GET_VOTE, params)
 }
 
 class SpotifyApiClient extends ApiClient {

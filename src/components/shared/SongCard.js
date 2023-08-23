@@ -2,24 +2,58 @@ import React, { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { BiSolidUpvote, BiSolidDownvote } from "react-icons/bi";
 import { cn, getPCN } from "@/utils/classes";
+import { getUserId } from "@/utils/userId";
+import useVotes from "@/hooks/useVotes";
 
 const className = 'song-card'
 const pcn = getPCN(className)
 
-export default function SongCard({ song, socket }) {
+export default function SongCard({ song, socket, roomInfo }) {
+    const { getVotesBySong } = useVotes()
+
     const [upvote, setUpvote] = useState(false)
     const [downvote, setDownvote] = useState(false)
+    const [votes, setVotes] = useState()
+    const userId = getUserId()
+    const roomId = roomInfo.auxpartyId
+    const songId = song.id
+
+    useEffect(() => {
+        socket.on('voteAdded', async (songVotes) => {
+            if (songId === songVotes.songId) {
+                setVotes(songVotes.voteCount)
+            }
+        })
+
+        async function getVoteData() {
+            const votes = await getVotesBySong(songId)
+            setVotes(votes)
+        }
+        getVoteData()
+    }, [])
 
     function handleDownvote() {
-        if (upvote) { setUpvote(false) }
-        setDownvote(!downvote)
-        socket.emit('ping');
+        if (downvote) { 
+            setDownvote(false)
+            socket.emit('addVote', roomId, songId, userId, 0)
+        }
+        else {
+            setUpvote(false)
+            setDownvote(true)
+            socket.emit('addVote', roomId, songId, userId, -1)
+        }
     }
 
     function handleUpvote() {
-        if (downvote) { setDownvote(false) }
-        setUpvote(!upvote)
-        socket.emit('ping');
+        if (upvote) { 
+            setUpvote(false)
+            socket.emit('addVote', roomId, songId, userId, 0)
+        }
+        else {
+            setUpvote(true)
+            setDownvote(false)
+            socket.emit('addVote', roomId, songId, userId, 1)
+        }
     }
 
     const renderVotes = useCallback(() => (
@@ -28,13 +62,13 @@ export default function SongCard({ song, socket }) {
                 <BiSolidDownvote size='30px' />
             </button>
             <div className={pcn('__votes')}>
-                {song.votes}
+                {votes}
             </div>
             <button className={upvote ? cn(pcn('__upvote'), 'selected') : pcn('__upvote')} onClick={handleUpvote}>
                 <BiSolidUpvote size='30px' />
             </button>
         </div>
-    ), [upvote, downvote])
+    ), [upvote, downvote, votes])
 
     return (
         <div className={className}>

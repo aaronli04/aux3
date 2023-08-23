@@ -44,8 +44,8 @@ function useSpotifyPlaylists() {
     }
 
     return {
-        createSpotifyPlaylist: createSpotifyPlaylist,
-        addSongToPlaylist: addSongToPlaylist
+        createSpotifyPlaylist,
+        addSongToPlaylist
     }
 }
 

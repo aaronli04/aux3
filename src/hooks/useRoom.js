@@ -55,10 +55,10 @@ function useRoom() {
     }
 
     return {
-        getRoomByName: getRoomByName,
-        getRoomByAuxpartyId: getRoomByAuxpartyId,
-        createRoom: createRoom,
-        getAllRooms: getAllRooms
+        getRoomByName,
+        getRoomByAuxpartyId,
+        createRoom,
+        getAllRooms
     }
 }
 

@@ -51,7 +51,7 @@ function useSpotifyTracks() {
     }
 
     return {
-        searchTrack: searchTrack,
+        searchTrack
     }
 }
 

@@ -91,9 +91,9 @@ function useSpotifyLogin() {
   }
 
   return {
-    generateAuthorizationCode: generateAuthorizationCode,
-    requestAccessToken: requestAccessToken,
-    refreshAccessToken: refreshAccessToken
+    generateAuthorizationCode,
+    requestAccessToken,
+    refreshAccessToken
   };
 }
 

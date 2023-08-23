@@ -34,7 +34,7 @@ function useSpotifyReadUser() {
     }
 
     return {
-        readSpotifyUserInfo: readSpotifyUserInfo
+        readSpotifyUserInfo
     };
 }
 

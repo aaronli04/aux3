@@ -39,7 +39,7 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                 accessToken: updatedToken,
             }))
         })
-        socket.on('roomDeleted', () =>{
+        socket.on('roomDeleted', () => {
             window.location.href = '/rooms'
         })
         socket.on('songAdded', async (song) => {
@@ -105,7 +105,7 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                         <div className={pcn('__subtitle')}>
                             now playing
                         </div>
-                        {songs[0] && <SongCard song={songs[0]} socket={socket} />}
+                        {songs[0] && <SongCard song={songs[0]} socket={socket} roomInfo={roomInfo} />}
                     </div>
                     <div className={pcn('__queue-section')}>
                         <div className={pcn('__subtitle')}>
@@ -113,7 +113,7 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                         </div>
                         <div className={pcn('__queue')}>
                             {songs.slice(1).map((song, index) =>
-                                <SongCard key={index} song={song} socket={socket} />
+                                <SongCard key={index} song={song} socket={socket} roomInfo={roomInfo}/>
                             )}
                         </div>
                     </div>

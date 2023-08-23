@@ -650,6 +650,8 @@ html {
 
 .song-card {
   height: 45px;
+  max-width: 300px;
+  min-width: 300px;
 }
 .song-card .song-card__liner {
   display: flex;
@@ -710,6 +712,11 @@ html {
   font-size: 18px;
   line-height: 22px;
   color: #022F40;
+  min-width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .room-does-not-exist {
