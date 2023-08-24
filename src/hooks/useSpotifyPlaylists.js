@@ -37,7 +37,7 @@ function useSpotifyPlaylists() {
         if (response.error) {
             if (response.error.message === constants.SPOTIFY_ERROR_ACCESS_TOKEN_EXPIRED || response.error.message === constants.SPOTIFY_ERROR_INVALID_ACCESS_TOKEN) {
                 newAccessToken = await refreshAccessToken(refreshToken)
-                response = (await api.spotify.addSongToPlaylist(accessToken, playlistId, params)).data
+                response = (await api.spotify.addSongToPlaylist(newAccessToken, playlistId, params)).data
             }
         }
         return { newAccessToken }

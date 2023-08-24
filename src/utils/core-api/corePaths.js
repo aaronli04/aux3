@@ -3,6 +3,7 @@ const prefix = {
     USER: '/user',
     ROOM: '/room',
     VOTE: '/vote',
+    SONG: '/song'
 }
 
 const corePaths = {
@@ -15,7 +16,8 @@ const corePaths = {
     GET_ALL_ROOMS: `${prefix.ROOM}/get/all`,
     CREATE_ROOM: `${prefix.ROOM}/create`,
     ADD_VOTE: `${prefix.VOTE}/add`,
-    GET_VOTE: `${prefix.VOTE}/get`
+    GET_VOTE: `${prefix.VOTE}/get`,
+    GET_SONG: `${prefix.SONG}/get`
 }
 
 export default corePaths

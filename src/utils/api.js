@@ -107,6 +107,8 @@ class CoreApiClient extends ApiClient {
 
     addVoteToSong = async (params) => await this.post(corePaths.ADD_VOTE, params)
     getVotesBySong = async (params) => await this.post(corePaths.GET_VOTE, params)
+
+    getSongByAuxpartyId = async (params) => await this.post(corePaths.GET_SONG, params)
 }
 
 class SpotifyApiClient extends ApiClient {

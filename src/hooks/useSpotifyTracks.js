@@ -39,7 +39,7 @@ function useSpotifyTracks() {
                 artists,
                 name,
                 uri,
-                id: uuidv4()
+                auxpartyId: uuidv4()
             }
 
             if (!processedURIs.has(uri)) {

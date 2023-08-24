@@ -9,6 +9,7 @@ import { getUserId } from "@/utils/userId"
 import { parse } from "@/utils/json"
 import useSpotifyPlaylists from "@/hooks/useSpotifyPlaylists"
 import useUser from "@/hooks/useUser"
+import useSongs from "@/hooks/useSongs"
 
 const className = 'loaded-room-component'
 const pcn = getPCN(className)
@@ -16,6 +17,7 @@ const pcn = getPCN(className)
 export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
     const { addSongToPlaylist } = useSpotifyPlaylists()
     const { updateAccessToken } = useUser()
+    const { getSongByAuxpartyId } = useSongs()
 
     const [panelOpen, setPanelOpen] = useState(false)
     const [owner, setOwner] = useState(ownerInfo)
@@ -26,11 +28,20 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
     const socket = io(constants.CORE_API_ORIGIN)
     const userId = getUserId()
 
+
     useEffect(() => {
-        const existingQueue = parse(room.queue)
-        if (existingQueue) {
-            setSongs(existingQueue)
+        async function fetchSongData() {
+            const existingQueue = parse(room.queue)
+            if (existingQueue) {
+                existingQueue.forEach(async (song) => {
+                    const songData = await getSongByAuxpartyId(song)
+                    if (songData) {
+                        setSongs([...songs, songData])
+                    }
+                })
+            }
         }
+        fetchSongData()
         if (!userId || !room.auxpartyId) { return }
         socket.emit('joinRoom', userId, room.auxpartyId)
         socket.on('accessTokenUpdated', (updatedToken) => {

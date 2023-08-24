@@ -16,7 +16,7 @@ export default function SongCard({ song, socket, roomInfo }) {
     const [votes, setVotes] = useState()
     const userId = getUserId()
     const roomId = roomInfo.auxpartyId
-    const songId = song.id
+    const songId = song.auxpartyId
 
     useEffect(() => {
         socket.on('voteAdded', async (songVotes) => {
