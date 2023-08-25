@@ -3,33 +3,24 @@ import Image from "next/image";
 import { BiSolidUpvote, BiSolidDownvote } from "react-icons/bi";
 import { cn, getPCN } from "@/utils/classes";
 import { getUserId } from "@/utils/userId";
-import useVotes from "@/hooks/useVotes";
 
 const className = 'song-card'
 const pcn = getPCN(className)
 
 export default function SongCard({ song, socket, roomInfo }) {
-    const { getVotesBySong } = useVotes()
-
     const [upvote, setUpvote] = useState(false)
     const [downvote, setDownvote] = useState(false)
-    const [votes, setVotes] = useState()
+    const [votes, setVotes] = useState(song.voteCount)
     const userId = getUserId()
     const roomId = roomInfo.auxpartyId
     const songId = song.auxpartyId
 
     useEffect(() => {
-        socket.on('voteAdded', async (songVotes) => {
-            if (songId === songVotes.songId) {
-                setVotes(songVotes.voteCount)
+        socket.on('voteAdded', async (song) => {
+            if (songId === song.auxpartyId) {
+                setVotes(song.voteCount)
             }
         })
-
-        async function getVoteData() {
-            const votes = await getVotesBySong(songId)
-            setVotes(votes)
-        }
-        getVoteData()
     }, [])
 
     function handleDownvote() {

@@ -10,6 +10,7 @@ import { parse } from "@/utils/json"
 import useSpotifyPlaylists from "@/hooks/useSpotifyPlaylists"
 import useUser from "@/hooks/useUser"
 import useSongs from "@/hooks/useSongs"
+import useVotes from "@/hooks/useVotes"
 
 const className = 'loaded-room-component'
 const pcn = getPCN(className)
@@ -18,28 +19,42 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
     const { addSongToPlaylist } = useSpotifyPlaylists()
     const { updateAccessToken } = useUser()
     const { getSongByAuxpartyId } = useSongs()
+    const { getVotesBySong } = useVotes()
 
     const [panelOpen, setPanelOpen] = useState(false)
     const [owner, setOwner] = useState(ownerInfo)
     const [room, setRoom] = useState(roomInfo)
     const [deletePanel, setDeletePanel] = useState(false)
     const [songs, setSongs] = useState([])
+    const [currentSong, setCurrentSong] = useState()
 
     const socket = io(constants.CORE_API_ORIGIN)
     const userId = getUserId()
-
+    const existingQueue = parse(room.queue)
 
     useEffect(() => {
         async function fetchSongData() {
-            const existingQueue = parse(room.queue)
-            if (existingQueue) {
-                existingQueue.forEach(async (song) => {
-                    const songData = await getSongByAuxpartyId(song)
-                    if (songData) {
-                        setSongs([...songs, songData])
-                    }
-                })
-            }
+            if (!existingQueue || existingQueue.length === 0) { return }
+            
+            const fetchedSongs = await Promise.all(existingQueue.map(async (song) => {
+                const songData = await getSongByAuxpartyId(song)
+                if (!songData) { return null }
+                let voteCount = await getVotesBySong(song)
+                if (!voteCount) {
+                    voteCount = 0
+                }
+                return {
+                    ...songData,
+                    voteCount,
+                }
+            }))
+            const filteredSongs = fetchedSongs.filter(song => song !== null)
+            // should be based on spotify hook that accesses current playback state every 5 seconds, interval call
+            // once it matches uri with the first occurrence in the list it will pop that so that the rest of the queue is reflected
+            // rest of queue interchanges places and continues to swap
+            // setCurrentSong(filteredSongs[0])
+            // pop queue based on duration
+            setSongs(filteredSongs.slice(1))
         }
         fetchSongData()
         if (!userId || !room.auxpartyId) { return }
@@ -68,7 +83,11 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
             socket.off('pong')
             socket.disconnect()
         }
-    }, [])
+    }, [existingQueue.length])
+
+    // update song order
+    // start a context playback
+    // change order of items in playlist context is playing
 
     const deleteRoom = useCallback(() => {
         socket.emit('deleteRoom', room.auxpartyId)
@@ -116,15 +135,15 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                         <div className={pcn('__subtitle')}>
                             now playing
                         </div>
-                        {songs[0] && <SongCard song={songs[0]} socket={socket} roomInfo={roomInfo} />}
+                        {currentSong && <SongCard song={currentSong} socket={socket} roomInfo={roomInfo} />}
                     </div>
                     <div className={pcn('__queue-section')}>
                         <div className={pcn('__subtitle')}>
                             queue
                         </div>
                         <div className={pcn('__queue')}>
-                            {songs.slice(1).map((song, index) =>
-                                <SongCard key={index} song={song} socket={socket} roomInfo={roomInfo}/>
+                            {songs.map((song, index) =>
+                                <SongCard key={index} song={song} socket={socket} roomInfo={roomInfo} />
                             )}
                         </div>
                     </div>

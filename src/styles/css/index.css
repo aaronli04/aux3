@@ -650,12 +650,13 @@ html {
 
 .song-card {
   height: 45px;
-  max-width: 300px;
-  min-width: 300px;
+  max-width: 330px;
+  min-width: 330px;
 }
 .song-card .song-card__liner {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 .song-card .song-card__liner .song-card__song-info {
   display: flex;
