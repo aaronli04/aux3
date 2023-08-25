@@ -37,7 +37,8 @@ function useRoom() {
             auxpartyId: userId,
             roomName,
             roomPassword,
-            playlistId: spotifyResponse.playlistId
+            playlistId: spotifyResponse.playlistId,
+            uri: spotifyResponse.uri
         }
         const response = (await api.core.createRoom(body)).data
         if (!response) { return }

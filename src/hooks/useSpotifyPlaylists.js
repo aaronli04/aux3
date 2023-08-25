@@ -21,7 +21,8 @@ function useSpotifyPlaylists() {
             }
         }
         const playlistId = response.id
-        return { playlistId, newAccessToken }
+        const uri = response.uri
+        return { playlistId, uri, newAccessToken }
     }
 
     async function addSongToPlaylist(accessToken, refreshToken, playlistId, song) {

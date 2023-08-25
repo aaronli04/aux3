@@ -32,6 +32,9 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
     const userId = getUserId()
     const existingQueue = parse(room.queue)
 
+    // if owner and if songs length > 0
+    // start playing --> this is probably a useEffect
+
     useEffect(() => {
         async function fetchSongData() {
             if (!existingQueue || existingQueue.length === 0) { return }
@@ -53,7 +56,6 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
             // once it matches uri with the first occurrence in the list it will pop that so that the rest of the queue is reflected
             // rest of queue interchanges places and continues to swap
             // setCurrentSong(filteredSongs[0])
-            // pop queue based on duration
             setSongs(filteredSongs.slice(1))
         }
         fetchSongData()
@@ -83,7 +85,7 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
             socket.off('pong')
             socket.disconnect()
         }
-    }, [existingQueue.length])
+    }, [songs.length])
 
     // update song order
     // start a context playback

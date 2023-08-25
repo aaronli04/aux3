@@ -77,6 +77,7 @@ export default function CreateRoomComponent() {
         const { roomName, roomPassword } = formData
         if (nonEmptyString(roomName) && nonEmptyString(roomPassword)) {
             const response = await createRoom(roomName, roomPassword)
+            if (!response) { return }
             if (!response.data) {
                 setErrors((prevErrors) => ({
                     ...prevErrors,
