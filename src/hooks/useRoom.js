@@ -55,11 +55,21 @@ function useRoom() {
         return data
     }
 
+    async function updateRoomActive(auxpartyId, active) {
+        if (!auxpartyId || !active) { return }
+        const params = {
+            auxpartyId,
+            active
+        }
+        const response = (await api.core.updateRoomActive(params)).data
+    }
+
     return {
         getRoomByName,
         getRoomByAuxpartyId,
         createRoom,
-        getAllRooms
+        getAllRooms,
+        updateRoomActive
     }
 }
 

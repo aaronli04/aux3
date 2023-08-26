@@ -11,15 +11,17 @@ import useSpotifyPlaylists from "@/hooks/useSpotifyPlaylists"
 import useUser from "@/hooks/useUser"
 import useSongs from "@/hooks/useSongs"
 import useVotes from "@/hooks/useVotes"
+import useRoom from "@/hooks/useRoom"
 
 const className = 'loaded-room-component'
 const pcn = getPCN(className)
 
 export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
-    const { addSongToPlaylist } = useSpotifyPlaylists()
+    const { addSongToPlaylist, playPlaylist } = useSpotifyPlaylists()
     const { updateAccessToken } = useUser()
     const { getSongByAuxpartyId } = useSongs()
     const { getVotesBySong } = useVotes()
+    const { updateRoomActive } = useRoom()
 
     const [panelOpen, setPanelOpen] = useState(false)
     const [owner, setOwner] = useState(ownerInfo)
@@ -27,13 +29,11 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
     const [deletePanel, setDeletePanel] = useState(false)
     const [songs, setSongs] = useState([])
     const [currentSong, setCurrentSong] = useState()
+    const [active, setActive] = useState(roomInfo.active)
 
     const socket = io(constants.CORE_API_ORIGIN)
     const userId = getUserId()
     const existingQueue = parse(room.queue)
-
-    // if owner and if songs length > 0
-    // start playing --> this is probably a useEffect
 
     useEffect(() => {
         async function fetchSongData() {
@@ -52,13 +52,10 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                 }
             }))
             const filteredSongs = fetchedSongs.filter(song => song !== null)
-            // should be based on spotify hook that accesses current playback state every 5 seconds, interval call
-            // once it matches uri with the first occurrence in the list it will pop that so that the rest of the queue is reflected
-            // rest of queue interchanges places and continues to swap
-            // setCurrentSong(filteredSongs[0])
-            setSongs(filteredSongs.slice(1))
+            setSongs(filteredSongs)
         }
         fetchSongData()
+        
         if (!userId || !room.auxpartyId) { return }
         socket.emit('joinRoom', userId, room.auxpartyId)
         socket.on('accessTokenUpdated', (updatedToken) => {
@@ -71,7 +68,7 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
             window.location.href = '/rooms'
         })
         socket.on('songAdded', async (song) => {
-            setSongs([...songs, song])
+            setSongs(prevSongs => [...prevSongs, song])
             const response = await addSongToPlaylist(ownerInfo.accessToken, ownerInfo.refreshToken, roomInfo.playlistId, song)
             const newAccessToken = response.newAccessToken
             if (newAccessToken) {
@@ -85,10 +82,26 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
             socket.off('pong')
             socket.disconnect()
         }
+    }, [])
+
+    useEffect(() => {
+        async function playAndUpdate() {
+            if (ownerInfo.auxpartyId !== userId) { return }
+            if (songs.length > 0 && !active) {
+                const response = await playPlaylist(ownerInfo.accessToken, ownerInfo.refreshToken, ownerInfo.deviceId, roomInfo.uri)
+                const newAccessToken = response.newAccessToken
+                if (newAccessToken) {
+                    updateAccessToken(ownerInfo.auxpartyId, newAccessToken)
+                }
+                updateRoomActive(roomInfo.auxpartyId, true)
+                setActive(true)
+            }
+        }
+
+        playAndUpdate()
     }, [songs.length])
 
     // update song order
-    // start a context playback
     // change order of items in playlist context is playing
 
     const deleteRoom = useCallback(() => {
@@ -137,14 +150,14 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                         <div className={pcn('__subtitle')}>
                             now playing
                         </div>
-                        {currentSong && <SongCard song={currentSong} socket={socket} roomInfo={roomInfo} />}
+                        {songs[0] && <SongCard song={songs[0]} socket={socket} roomInfo={roomInfo} />}
                     </div>
                     <div className={pcn('__queue-section')}>
                         <div className={pcn('__subtitle')}>
                             queue
                         </div>
                         <div className={pcn('__queue')}>
-                            {songs.map((song, index) =>
+                            {songs.slice(1).map((song, index) =>
                                 <SongCard key={index} song={song} socket={socket} roomInfo={roomInfo} />
                             )}
                         </div>

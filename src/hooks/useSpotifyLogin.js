@@ -1,5 +1,4 @@
 import constants from '@/utils/constants';
-import { parse } from '@/utils/json';
 import { localStorageGet, localStorageRemove, localStorageSet } from '@/utils/localStorage';
 import { generateId } from '@/utils/random';
 import useUser from './useUser';
@@ -52,13 +51,15 @@ function useSpotifyLogin() {
       accessToken = result.access_token;
       refreshToken = result.refresh_token;
       scope = result.scope;
+      const deviceId = await getDevice(accessToken, refreshToken)
       const info = { accessToken, refreshToken, scope };
       localStorageSet('spotify-access-token', JSON.stringify(info));
       const spotifyUserInfo = await readSpotifyUserInfo();
       const spotifyData = {
         ...spotifyUserInfo,
         refresh_token: refreshToken,
-        access_token: accessToken
+        access_token: accessToken,
+        deviceId
       }
       await createUserAccount(spotifyData);
       return info;
@@ -87,6 +88,24 @@ function useSpotifyLogin() {
     } catch (err) {
       console.log(err)
       return null
+    }
+  }
+
+  async function getDevice(accessToken) {
+    const url = 'https://api.spotify.com/v1/me/player/devices'
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+  
+      const responseData = await response.json()
+      const device = responseData.devices[0].id
+      return device
+    } catch (err) {
+      console.log(err)
     }
   }
 

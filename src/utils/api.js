@@ -16,7 +16,7 @@ export class ApiClient {
         DELETE: 'DELETE',
     }
 
-    static successStatuses = new Set([200, 201])
+    static successStatuses = new Set([200, 201, 204])
 
     constructor( path = '/', convertToSnakeCase = true ) {
         this.path = path
@@ -109,6 +109,7 @@ class CoreApiClient extends ApiClient {
     getVotesBySong = async (params) => await this.post(corePaths.GET_VOTE, params)
 
     getSongByAuxpartyId = async (params) => await this.post(corePaths.GET_SONG, params)
+    updateRoomActive = async (params) => await this.post(corePaths.UPDATE_ROOM_ACTIVE, params)
 }
 
 class SpotifyApiClient extends ApiClient {
@@ -144,6 +145,7 @@ class SpotifyApiClient extends ApiClient {
     searchTrack = async (accessToken, params) => await this.urlEncodedRequest(ApiClient.methods.GET, spotifyPaths.SEARCH, accessToken, params)
     createPlaylist = async (accessToken, userId, params) => await this.post(`/v1/users/${userId}/playlists`, accessToken, params)
     addSongToPlaylist = async (accessToken, playlistId, params) => await this.post(`/v1/playlists/${playlistId}/tracks`, accessToken, params)
+    playPlaylist = async (accessToken, deviceId, params) => await this.put(`${spotifyPaths.START_PLAYBACK}?device_id=${deviceId}`, accessToken, params)
 }
 
 const api = {

@@ -35,7 +35,7 @@ function useSpotifyReadUser() {
 
     return {
         readSpotifyUserInfo
-    };
+    }
 }
 
 export default useSpotifyReadUser

@@ -1,6 +1,7 @@
 import api from "@/utils/api";
 import constants from "@/utils/constants";
 import useSpotifyLogin from "./useSpotifyLogin";
+import { stringify } from "@/utils/json";
 
 function useSpotifyPlaylists() {
 
@@ -44,9 +45,48 @@ function useSpotifyPlaylists() {
         return { newAccessToken }
     }
 
+    async function playPlaylist(accessToken, refreshToken, deviceId, uri) {
+        if (!uri) { return }
+        const params = {
+            "context_uri": `${uri}`
+        }
+        let newAccessToken
+        try {
+            let response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: stringify(params)
+            })
+            response = await response.json()
+            console.log(response)
+            if (response.error) {
+                if (response.error.message === constants.SPOTIFY_ERROR_ACCESS_TOKEN_EXPIRED || response.error.message === constants.SPOTIFY_ERROR_INVALID_ACCESS_TOKEN) {
+                    newAccessToken = await refreshAccessToken(refreshToken)
+                    response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: stringify(params)
+                    })
+                }
+            }
+        } catch (err) {
+            console.log(err)
+        }
+        return { newAccessToken }
+    }
+
+
+
     return {
         createSpotifyPlaylist,
-        addSongToPlaylist
+        addSongToPlaylist,
+        playPlaylist
     }
 }
 

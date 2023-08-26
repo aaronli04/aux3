@@ -650,8 +650,6 @@ html {
 
 .song-card {
   height: 45px;
-  max-width: 330px;
-  min-width: 330px;
 }
 .song-card .song-card__liner {
   display: flex;
