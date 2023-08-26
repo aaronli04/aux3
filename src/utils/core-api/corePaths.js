@@ -18,7 +18,8 @@ const corePaths = {
     ADD_VOTE: `${prefix.VOTE}/add`,
     GET_VOTE: `${prefix.VOTE}/get`,
     GET_SONG: `${prefix.SONG}/get`,
-    UPDATE_ROOM_ACTIVE: `${prefix.ROOM}/update/status`
+    UPDATE_ROOM_ACTIVE: `${prefix.ROOM}/update/status`,
+    UPDATE_SONG_ADDED: `${prefix.SONG}/update/added`,
 }
 
 export default corePaths

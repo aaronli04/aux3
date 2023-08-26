@@ -8,7 +8,7 @@ import RoomDoesNotExistComponent from "./RoomDoesNotExistComponent";
 import { getUserId } from "@/utils/userId";
 
 export default function RoomComponent({ roomName }) {
-    const { getRoomByName } = useRoom();
+    const { getRoomByName } = useRoom()
     const { getUserInfo } = useUser()
 
     const [loggedIn, setLoggedIn] = useState(false)
@@ -20,7 +20,7 @@ export default function RoomComponent({ roomName }) {
         async function fetchData(userId) {
             if (!roomName) {
                 setIsLoading(false)
-                return;
+                return
             }
             const roomData = (await getRoomByName(roomName))
             if (!roomData) {
@@ -41,7 +41,7 @@ export default function RoomComponent({ roomName }) {
             setIsLoading(false)
         }
         if (roomName) {
-            const userId = getUserId();
+            const userId = getUserId()
             fetchData(userId)
         }
     }, [roomName, loggedIn])

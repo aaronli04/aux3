@@ -1,11 +1,13 @@
 import api from "@/utils/api";
 import constants from "@/utils/constants";
 import useSpotifyLogin from "./useSpotifyLogin";
+import useSongs from "./useSongs";
 import { stringify } from "@/utils/json";
 
 function useSpotifyPlaylists() {
 
     const { refreshAccessToken } = useSpotifyLogin()
+    const { getSongByAuxpartyId, updateSongAdded } = useSongs()
 
     async function createSpotifyPlaylist(accessToken, refreshToken, spotifyUserId, playlistName) {
         if (!spotifyUserId || !playlistName) { return }
@@ -35,7 +37,7 @@ function useSpotifyPlaylists() {
             ]
         }
         let response = (await api.spotify.addSongToPlaylist(accessToken, playlistId, params)).data
-        let newAccessToken = null;
+        let newAccessToken = null
         if (response.error) {
             if (response.error.message === constants.SPOTIFY_ERROR_ACCESS_TOKEN_EXPIRED || response.error.message === constants.SPOTIFY_ERROR_INVALID_ACCESS_TOKEN) {
                 newAccessToken = await refreshAccessToken(refreshToken)

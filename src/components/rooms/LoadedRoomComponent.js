@@ -17,7 +17,7 @@ const className = 'loaded-room-component'
 const pcn = getPCN(className)
 
 export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
-    const { addSongToPlaylist, playPlaylist } = useSpotifyPlaylists()
+    const { playPlaylist } = useSpotifyPlaylists()
     const { updateAccessToken } = useUser()
     const { getSongByAuxpartyId } = useSongs()
     const { getVotesBySong } = useVotes()
@@ -28,7 +28,6 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
     const [room, setRoom] = useState(roomInfo)
     const [deletePanel, setDeletePanel] = useState(false)
     const [songs, setSongs] = useState([])
-    const [currentSong, setCurrentSong] = useState()
     const [active, setActive] = useState(roomInfo.active)
 
     const socket = io(constants.CORE_API_ORIGIN)
@@ -68,12 +67,11 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
             window.location.href = '/rooms'
         })
         socket.on('songAdded', async (song) => {
-            setSongs(prevSongs => [...prevSongs, song])
-            const response = await addSongToPlaylist(ownerInfo.accessToken, ownerInfo.refreshToken, roomInfo.playlistId, song)
-            const newAccessToken = response.newAccessToken
-            if (newAccessToken) {
-                updateAccessToken(ownerInfo.auxpartyId, newAccessToken)
+            const completeSong = {
+                ...song,
+                voteCount: 0
             }
+            setSongs(prevSongs => [...prevSongs, completeSong])
         })
         return () => {
             socket.off('accessTokenUpdated')

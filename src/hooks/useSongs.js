@@ -14,7 +14,7 @@ function useSongs() {
     }
 
     return {
-        getSongByAuxpartyId,
+        getSongByAuxpartyId
     }
 
 }

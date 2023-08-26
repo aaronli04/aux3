@@ -30,7 +30,7 @@ export default function SpotifySearch({ ownerInfo, roomInfo, socket }) {
     const renderSearchResults = useCallback(() => (
         <div className={pcn('__search-results')}>
             {filteredItems && filteredItems.map((item, index) =>
-                <AddSongCard key={index} song={item} socket={socket} roomInfo={roomInfo} />
+                <AddSongCard key={index} song={item} socket={socket} roomInfo={roomInfo} ownerInfo={ownerInfo} />
             )}
         </div>
     ), [filteredItems])
