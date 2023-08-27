@@ -63,17 +63,46 @@ function useSpotifyPlaylists() {
                 body: stringify(params)
             })
             response = await response.json()
-            console.log(response)
             if (response.error) {
                 if (response.error.message === constants.SPOTIFY_ERROR_ACCESS_TOKEN_EXPIRED || response.error.message === constants.SPOTIFY_ERROR_INVALID_ACCESS_TOKEN) {
                     newAccessToken = await refreshAccessToken(refreshToken)
                     response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
                         method: 'PUT',
                         headers: {
-                            'Authorization': `Bearer ${accessToken}`,
+                            'Authorization': `Bearer ${newAccessToken}`,
                             'Content-Type': 'application/json'
                         },
                         body: stringify(params)
+                    })
+                }
+            }
+        } catch (err) {
+            console.log(err)
+        }
+        return { newAccessToken }
+    }
+
+    async function shufflePlaylist(accessToken, refreshToken, deviceId, shuffleState) {
+        if (!deviceId) { return }
+        let newAccessToken
+        try {
+            let response = await fetch(`https://api.spotify.com/v1/me/player/shuffle?state=${shuffleState}&device_id=${deviceId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+            response = await response.json()
+            if (response.error) {
+                if (response.error.message === constants.SPOTIFY_ERROR_ACCESS_TOKEN_EXPIRED || response.error.message === constants.SPOTIFY_ERROR_INVALID_ACCESS_TOKEN) {
+                    newAccessToken = await refreshAccessToken(refreshToken)
+                    response = await fetch(`https://api.spotify.com/v1/me/player/shuffle?state=${shuffleState}&device_id=${deviceId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${newAccessToken}`,
+                            'Content-Type': 'application/json'
+                        },
                     })
                 }
             }
@@ -88,7 +117,8 @@ function useSpotifyPlaylists() {
     return {
         createSpotifyPlaylist,
         addSongToPlaylist,
-        playPlaylist
+        playPlaylist,
+        shufflePlaylist
     }
 }
 

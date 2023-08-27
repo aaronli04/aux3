@@ -17,7 +17,7 @@ const className = 'loaded-room-component'
 const pcn = getPCN(className)
 
 export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
-    const { playPlaylist } = useSpotifyPlaylists()
+    const { playPlaylist, shufflePlaylist } = useSpotifyPlaylists()
     const { updateAccessToken } = useUser()
     const { getSongByAuxpartyId } = useSongs()
     const { getVotesBySong } = useVotes()
@@ -119,20 +119,22 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
 
     useEffect(() => {
         async function playAndUpdate() {
-            if (ownerInfo.auxpartyId !== userId) { return }
+            if (owner.auxpartyId !== userId) { return }
+            console.log(active)
             if (songs.length > 0 && !active) {
-                const response = await playPlaylist(ownerInfo.accessToken, ownerInfo.refreshToken, ownerInfo.deviceId, roomInfo.uri)
-                const newAccessToken = response.newAccessToken
+                const shuffleResponse = await shufflePlaylist(owner.accessToken, owner.refreshToken, owner.deviceId, false)
+                const newAccessToken = shuffleResponse.newAccessToken
                 if (newAccessToken) {
-                    updateAccessToken(ownerInfo.auxpartyId, newAccessToken)
+                    updateAccessToken(owner.auxpartyId, newAccessToken)
                 }
-                updateRoomActive(roomInfo.auxpartyId, true)
+                const playResponse = await playPlaylist(owner.accessToken, owner.refreshToken, owner.deviceId, room.uri)
+                updateRoomActive(room.auxpartyId, true)
                 setActive(true)
             }
         }
 
         playAndUpdate()
-    }, [songs.length])
+    }, [songs])
 
     // update song order
     // change order of items in playlist context is playing
@@ -183,7 +185,7 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                         <div className={pcn('__subtitle')}>
                             now playing
                         </div>
-                        {songs[0] && <SongCard song={songs[0]} socket={socket} roomInfo={roomInfo} />}
+                        {songs[0] && <SongCard song={songs[0]} socket={socket} roomInfo={room} />}
                     </div>
                     <div className={pcn('__queue-section')}>
                         <div className={pcn('__subtitle')}>
@@ -191,7 +193,7 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                         </div>
                         <div className={pcn('__queue')}>
                             {songs.slice(1).map((song, index) =>
-                                <SongCard key={index} song={song} socket={socket} roomInfo={roomInfo} />
+                                <SongCard key={index} song={song} socket={socket} roomInfo={room} />
                             )}
                         </div>
                     </div>
