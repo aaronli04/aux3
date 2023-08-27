@@ -36,11 +36,15 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
 
     useEffect(() => {
         async function fetchSongData() {
-            if (!existingQueue || existingQueue.length === 0) { return }
-            
+            if (!existingQueue || existingQueue.length === 0) {
+                return
+            }
+    
             const fetchedSongs = await Promise.all(existingQueue.map(async (song) => {
                 const songData = await getSongByAuxpartyId(song)
-                if (!songData) { return null }
+                if (!songData) {
+                    return null
+                }
                 let voteCount = await getVotesBySong(song)
                 if (!voteCount) {
                     voteCount = 0
@@ -53,30 +57,60 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
             const filteredSongs = fetchedSongs.filter(song => song !== null)
             setSongs(filteredSongs)
         }
+    
         fetchSongData()
-        
-        if (!userId || !room.auxpartyId) { return }
+    
+        if (!userId || !room.auxpartyId) {
+            return
+        }
+    
         socket.emit('joinRoom', userId, room.auxpartyId)
-        socket.on('accessTokenUpdated', (updatedToken) => {
+    
+        const accessTokenUpdatedListener = (updatedToken) => {
             setOwner((prevInfo) => ({
                 ...prevInfo,
                 accessToken: updatedToken,
             }))
-        })
-        socket.on('roomDeleted', () => {
+        }
+    
+        const roomDeletedListener = () => {
             window.location.href = '/rooms'
-        })
-        socket.on('songAdded', async (song) => {
+        }
+    
+        const songAddedListener = (song) => {
             const completeSong = {
                 ...song,
                 voteCount: 0
             }
             setSongs(prevSongs => [...prevSongs, completeSong])
-        })
+        }
+    
+        const voteAddedListener = (updatedSong) => {
+            setSongs(prevSongs => {
+                const updatedSongs = prevSongs.map(existingSong => {
+                    if (existingSong.auxpartyId === updatedSong.auxpartyId) {
+                        return {
+                            ...existingSong,
+                            voteCount: updatedSong.voteCount
+                        }
+                    }
+                    return existingSong
+                })
+                updatedSongs.sort((a, b) => b.voteCount - a.voteCount)
+                return updatedSongs
+            })
+        }
+    
+        socket.on('accessTokenUpdated', accessTokenUpdatedListener)
+        socket.on('roomDeleted', roomDeletedListener)
+        socket.on('songAdded', songAddedListener)
+        socket.on('voteAdded', voteAddedListener)
+    
         return () => {
-            socket.off('accessTokenUpdated')
-            socket.off('roomDeleted')
-            socket.off('songAdded')
+            socket.off('accessTokenUpdated', accessTokenUpdatedListener)
+            socket.off('roomDeleted', roomDeletedListener)
+            socket.off('songAdded', songAddedListener)
+            socket.off('voteAdded', voteAddedListener)
             socket.off('pong')
             socket.disconnect()
         }
@@ -97,20 +131,6 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
         }
 
         playAndUpdate()
-
-        socket.on('voteAdded', async (song) => {
-            if (songs.length === 0) { return } 
-            let newSongs = songs.map(existingSong => {
-                if (existingSong.auxpartyId === song.auxpartyId) {
-                    return {
-                        ...existingSong,
-                        voteCount: song.voteCount
-                    }
-                }
-                return existingSong
-            })
-            setSongs(newSongs)
-        })
     }, [songs.length])
 
     // update song order

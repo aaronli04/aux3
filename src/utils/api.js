@@ -108,6 +108,7 @@ class CoreApiClient extends ApiClient {
 
     addVoteToSong = async (params) => await this.post(corePaths.ADD_VOTE, params)
     getVotesBySong = async (params) => await this.post(corePaths.GET_VOTE, params)
+    getUserVoteBySong = async (params) => await this.post(corePaths.GET_USER_VOTE, params)
 
     getSongByAuxpartyId = async (params) => await this.post(corePaths.GET_SONG, params)
 }
