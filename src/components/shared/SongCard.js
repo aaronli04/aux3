@@ -10,18 +10,9 @@ const pcn = getPCN(className)
 export default function SongCard({ song, socket, roomInfo }) {
     const [upvote, setUpvote] = useState(false)
     const [downvote, setDownvote] = useState(false)
-    const [votes, setVotes] = useState(song.voteCount)
     const userId = getUserId()
     const roomId = roomInfo.auxpartyId
     const songId = song.auxpartyId
-
-    useEffect(() => {
-        socket.on('voteAdded', async (song) => {
-            if (songId === song.auxpartyId) {
-                setVotes(song.voteCount)
-            }
-        })
-    }, [])
 
     function handleDownvote() {
         if (downvote) { 
@@ -53,13 +44,13 @@ export default function SongCard({ song, socket, roomInfo }) {
                 <BiSolidDownvote size='30px' />
             </button>
             <div className={pcn('__votes')}>
-                {votes}
+                {song.voteCount}
             </div>
             <button className={upvote ? cn(pcn('__upvote'), 'selected') : pcn('__upvote')} onClick={handleUpvote}>
                 <BiSolidUpvote size='30px' />
             </button>
         </div>
-    ), [upvote, downvote, votes])
+    ), [upvote, downvote, song.voteCount])
 
     return (
         <div className={className}>

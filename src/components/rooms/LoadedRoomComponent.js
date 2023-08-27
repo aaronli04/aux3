@@ -97,6 +97,20 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
         }
 
         playAndUpdate()
+
+        socket.on('voteAdded', async (song) => {
+            if (songs.length === 0) { return } 
+            let newSongs = songs.map(existingSong => {
+                if (existingSong.auxpartyId === song.auxpartyId) {
+                    return {
+                        ...existingSong,
+                        voteCount: song.voteCount
+                    }
+                }
+                return existingSong
+            })
+            setSongs(newSongs)
+        })
     }, [songs.length])
 
     // update song order
