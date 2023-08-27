@@ -55,6 +55,7 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                 }
             }))
             const filteredSongs = fetchedSongs.filter(song => song !== null)
+            filteredSongs.sort((a, b) => b.voteCount - a.voteCount)
             setSongs(filteredSongs)
         }
     
