@@ -8,17 +8,18 @@ import constants from "@/utils/constants"
 import { getUserId } from "@/utils/userId"
 import { parse } from "@/utils/json"
 import useSpotifyPlaylists from "@/hooks/useSpotifyPlaylists"
-import useUser from "@/hooks/useUser"
+import useSpotifyTracks from "@/hooks/useSpotifyTracks"
 import useSongs from "@/hooks/useSongs"
 import useVotes from "@/hooks/useVotes"
 import useRoom from "@/hooks/useRoom"
+import { findFirstOccurrenceUri } from "@/utils/songArray"
 
 const className = 'loaded-room-component'
 const pcn = getPCN(className)
 
 export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
     const { playPlaylist, shufflePlaylist } = useSpotifyPlaylists()
-    const { updateAccessToken } = useUser()
+    const { getCurrentlyPlaying } = useSpotifyTracks()
     const { getSongByAuxpartyId } = useSongs()
     const { getVotesBySong } = useVotes()
     const { updateRoomActive } = useRoom()
@@ -29,17 +30,19 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
     const [deletePanel, setDeletePanel] = useState(false)
     const [songs, setSongs] = useState([])
     const [active, setActive] = useState(roomInfo.active)
+    const [currentlyPlaying, setCurrentlyPlaying] = useState(roomInfo.currentlyPlaying)
 
     const socket = io(constants.CORE_API_ORIGIN)
     const userId = getUserId()
     const existingQueue = parse(room.queue)
 
+    // Fetch song data and web sockets
     useEffect(() => {
         async function fetchSongData() {
             if (!existingQueue || existingQueue.length === 0) {
                 return
             }
-    
+
             const fetchedSongs = await Promise.all(existingQueue.map(async (song) => {
                 const songData = await getSongByAuxpartyId(song)
                 if (!songData) {
@@ -58,26 +61,26 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
             filteredSongs.sort((a, b) => b.voteCount - a.voteCount)
             setSongs(filteredSongs)
         }
-    
+
         fetchSongData()
-    
+
         if (!userId || !room.auxpartyId) {
             return
         }
-    
+
         socket.emit('joinRoom', userId, room.auxpartyId)
-    
+
         const accessTokenUpdatedListener = (updatedToken) => {
             setOwner((prevInfo) => ({
                 ...prevInfo,
                 accessToken: updatedToken,
             }))
         }
-    
+
         const roomDeletedListener = () => {
             window.location.href = '/rooms'
         }
-    
+
         const songAddedListener = (song) => {
             const completeSong = {
                 ...song,
@@ -85,7 +88,7 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
             }
             setSongs(prevSongs => [...prevSongs, completeSong])
         }
-    
+
         const voteAddedListener = (updatedSong) => {
             setSongs(prevSongs => {
                 const updatedSongs = prevSongs.map(existingSong => {
@@ -101,12 +104,17 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                 return updatedSongs
             })
         }
-    
+
+        const currentlyPlayingSetListener = (currentlyPlaying) => {
+            setCurrentlyPlaying(currentlyPlaying)
+        }
+
         socket.on('accessTokenUpdated', accessTokenUpdatedListener)
         socket.on('roomDeleted', roomDeletedListener)
         socket.on('songAdded', songAddedListener)
         socket.on('voteAdded', voteAddedListener)
-    
+        socket.on('currentlyPlayingSet', currentlyPlayingSetListener)
+
         return () => {
             socket.off('accessTokenUpdated', accessTokenUpdatedListener)
             socket.off('roomDeleted', roomDeletedListener)
@@ -117,15 +125,15 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
         }
     }, [])
 
+    // Play the playlist
     useEffect(() => {
         async function playAndUpdate() {
             if (owner.auxpartyId !== userId) { return }
-            console.log(active)
             if (songs.length > 0 && !active) {
                 const shuffleResponse = await shufflePlaylist(owner.accessToken, owner.refreshToken, owner.deviceId, false)
                 const newAccessToken = shuffleResponse.newAccessToken
                 if (newAccessToken) {
-                    updateAccessToken(owner.auxpartyId, newAccessToken)
+                    socket.emit('updateAccessToken', owner.auxpartyId, newAccessToken)
                 }
                 const playResponse = await playPlaylist(owner.accessToken, owner.refreshToken, owner.deviceId, room.uri)
                 updateRoomActive(room.auxpartyId, true)
@@ -134,10 +142,37 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
         }
 
         playAndUpdate()
-    }, [songs])
+    }, [songs, active])
 
-    // update song order
-    // change order of items in playlist context is playing
+    // Get current song every 10s
+    useEffect(() => {
+        const getPlayingInterval = setInterval(async () => {
+            if (owner.auxpartyId !== userId) { return }
+            if (!active) { return }
+            const playingData = await getCurrentlyPlaying(owner.accessToken, owner.refreshToken)
+            const newAccessToken = playingData.newAccessToken
+            if (newAccessToken) {
+                socket.emit('updateAccessToken', owner.auxpartyId, newAccessToken)
+            }
+            const currentlyPlayingUri = playingData.uri
+            const firstOccurrence = findFirstOccurrenceUri(songs, currentlyPlayingUri)
+            if (firstOccurrence === -1) {
+                setActive(false)
+                return
+            }
+            if (firstOccurrence !== currentlyPlaying) {
+                socket.emit('setCurrentlyPlaying', room.auxpartyId, firstOccurrence)
+            }
+        }, 10000)
+
+        return () => {
+            clearInterval(getPlayingInterval)
+        }
+    }, [active])
+
+    useEffect(() => {
+        console.log(currentlyPlaying)
+    }, [currentlyPlaying])
 
     const deleteRoom = useCallback(() => {
         socket.emit('deleteRoom', room.auxpartyId)

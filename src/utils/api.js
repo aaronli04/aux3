@@ -147,6 +147,7 @@ class SpotifyApiClient extends ApiClient {
     createPlaylist = async (accessToken, userId, params) => await this.post(`/v1/users/${userId}/playlists`, accessToken, params)
     addSongToPlaylist = async (accessToken, playlistId, params) => await this.post(`/v1/playlists/${playlistId}/tracks`, accessToken, params)
     playPlaylist = async (accessToken, deviceId, params) => await this.put(`${spotifyPaths.START_PLAYBACK}?device_id=${deviceId}`, accessToken, params)
+    getCurrentlyPlaying = async (accessToken) => await this.get(spotifyPaths.GET_CURRENTLY_PLAYING, accessToken)
 }
 
 const api = {

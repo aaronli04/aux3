@@ -14,7 +14,7 @@ function useSpotifyTracks() {
             type: 'track'
         }
         let response = (await api.spotify.searchTrack(accessToken, params)).data
-        let newAccessToken = null;
+        let newAccessToken = null
         if (response.error) {
             if (response.error.message === constants.SPOTIFY_ERROR_ACCESS_TOKEN_EXPIRED || response.error.message === constants.SPOTIFY_ERROR_INVALID_ACCESS_TOKEN) {
                 newAccessToken = await refreshAccessToken(refreshToken)
@@ -46,12 +46,27 @@ function useSpotifyTracks() {
                 results.push(song)
                 processedURIs.add(uri)
             }
-        });
+        })
         return {results, newAccessToken}
     }
 
+    async function getCurrentlyPlaying(accessToken, refreshToken) {
+        let response = (await api.spotify.getCurrentlyPlaying(accessToken)).data
+        let newAccessToken = null
+        if (response.error) {
+            if (response.error.message === constants.SPOTIFY_ERROR_ACCESS_TOKEN_EXPIRED || response.error.message === constants.SPOTIFY_ERROR_INVALID_ACCESS_TOKEN) {
+                newAccessToken = await refreshAccessToken(refreshToken)
+                response = (await api.spotify.getCurrentlyPlaying(newAccessToken)).data
+            }
+        }
+        const uri = response.item.uri
+        return { newAccessToken, uri }
+    }
+
+
     return {
-        searchTrack
+        searchTrack,
+        getCurrentlyPlaying
     }
 }
 
