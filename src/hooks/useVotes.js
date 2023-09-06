@@ -29,7 +29,7 @@ function useVotes() {
             auxpartyId: songId,
             userId
         }
-        const response = (await api.core.getVotesBySong(params)).data
+        const response = (await api.core.getUserVoteBySong(params)).data
         if (response.error) { return null }
         const data = response.data
         return data

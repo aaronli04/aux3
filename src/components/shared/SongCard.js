@@ -28,7 +28,7 @@ export default function SongCard({ song, socket, roomInfo }) {
                 setDownvote(false)
                 setUpvote(false)
             }
-            else {
+            else if (userVote === -1) {
                 setDownvote(true)
                 setUpvote(false)
             }

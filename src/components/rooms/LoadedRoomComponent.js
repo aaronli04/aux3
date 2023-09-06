@@ -9,8 +9,7 @@ import { getUserId } from "@/utils/userId"
 import { parse } from "@/utils/json"
 import useSpotifyPlaylists from "@/hooks/useSpotifyPlaylists"
 import useSpotifyTracks from "@/hooks/useSpotifyTracks"
-import useSongs from "@/hooks/useSongs"
-import useVotes from "@/hooks/useVotes"
+import useCompleteSongs from "@/hooks/useCompleteSongs"
 import useRoom from "@/hooks/useRoom"
 import { findFirstOccurrenceUri } from "@/utils/songArray"
 
@@ -20,9 +19,8 @@ const pcn = getPCN(className)
 export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
     const { playPlaylist, shufflePlaylist } = useSpotifyPlaylists()
     const { getCurrentlyPlaying } = useSpotifyTracks()
-    const { getSongByAuxpartyId } = useSongs()
-    const { getVotesBySong } = useVotes()
     const { updateRoomActive } = useRoom()
+    const { fetchCompleteSongs } = useCompleteSongs()
 
     const [panelOpen, setPanelOpen] = useState(false)
     const [owner, setOwner] = useState(ownerInfo)
@@ -42,26 +40,9 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
             if (!existingQueue || existingQueue.length === 0) {
                 return
             }
-
-            const fetchedSongs = await Promise.all(existingQueue.map(async (song) => {
-                const songData = await getSongByAuxpartyId(song)
-                if (!songData) {
-                    return null
-                }
-                let voteCount = await getVotesBySong(song)
-                if (!voteCount) {
-                    voteCount = 0
-                }
-                return {
-                    ...songData,
-                    voteCount,
-                }
-            }))
-            const filteredSongs = fetchedSongs.filter(song => song !== null)
-            filteredSongs.sort((a, b) => b.voteCount - a.voteCount)
-            setSongs(filteredSongs)
+            const songs = await fetchCompleteSongs(existingQueue)
+            setSongs(songs)
         }
-
         fetchSongData()
 
         if (!userId || !room.auxpartyId) {
@@ -86,7 +67,7 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
                 ...song,
                 voteCount: 0
             }
-            setSongs(prevSongs => [...prevSongs, completeSong])
+            // setSongs(prevSongs => [...prevSongs, completeSong].sort((a, b) => b.voteCount - a.voteCount))
         }
 
         const voteAddedListener = (updatedSong) => {
@@ -157,7 +138,6 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
             const currentlyPlayingUri = playingData.uri
             const firstOccurrence = findFirstOccurrenceUri(songs, currentlyPlayingUri)
             if (firstOccurrence === -1) {
-                setActive(false)
                 return
             }
             if (firstOccurrence !== currentlyPlaying) {
@@ -169,10 +149,6 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
             clearInterval(getPlayingInterval)
         }
     }, [active])
-
-    useEffect(() => {
-        console.log(currentlyPlaying)
-    }, [currentlyPlaying])
 
     const deleteRoom = useCallback(() => {
         socket.emit('deleteRoom', room.auxpartyId)
