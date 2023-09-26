@@ -62,28 +62,12 @@ export default function LoadedRoomComponent({ ownerInfo, roomInfo }) {
             window.location.href = '/rooms'
         }
 
-        const songAddedListener = (song) => {
-            const completeSong = {
-                ...song,
-                voteCount: 0
-            }
-            // setSongs(prevSongs => [...prevSongs, completeSong].sort((a, b) => b.voteCount - a.voteCount))
+        const songAddedListener = (songs) => {
+            setSongs(songs)
         }
 
-        const voteAddedListener = (updatedSong) => {
-            setSongs(prevSongs => {
-                const updatedSongs = prevSongs.map(existingSong => {
-                    if (existingSong.auxpartyId === updatedSong.auxpartyId) {
-                        return {
-                            ...existingSong,
-                            voteCount: updatedSong.voteCount
-                        }
-                    }
-                    return existingSong
-                })
-                updatedSongs.sort((a, b) => b.voteCount - a.voteCount)
-                return updatedSongs
-            })
+        const voteAddedListener = (updatedQueue) => {
+            setSongs(updatedQueue)
         }
 
         const currentlyPlayingSetListener = (currentlyPlaying) => {
